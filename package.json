@@ -1,0 +1,17 @@
+{
+  "name": "werewolf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "fe": "pnpm --filter @werewolf/fe",
+    "be": "pnpm --filter @werewolf/be"
+  },
+  "keywords": [],
+  "author": "xiong35",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.18.0",
+    "typescript": "^4.9.3"
+  }
+}
