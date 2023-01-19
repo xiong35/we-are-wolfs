@@ -1,5 +1,10 @@
 import styles from "./index.module.less";
+import { FC } from "react";
 
-export function COMPONENT_NAME () {
+export type COMPONENT_NAMEProps = {
+  children: React.ReactNode;
+};
+
+export const COMPONENT_NAME: FC<COMPONENT_NAMEProps> = (props) => {
   return <div className={styles.COMPONENT_NAME}></div>;
-}
+};

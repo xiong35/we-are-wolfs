@@ -1,0 +1,36 @@
+@border-width: 3px;
+
+.use-border {
+  border: @border-width solid;
+  border-radius: 5px;
+  position: relative;
+  display: inline-block;
+
+  .use-border-mask {
+    position: absolute;
+    right: 6%;
+    top: -2 * @border-width;
+    height: 3 * @border-width;
+    width: 8px;
+    background-color: var(--bg);
+
+    &::before,
+    &::after {
+      content: "";
+      width: @border-width;
+      height: @border-width;
+      background-color: currentColor;
+      position: absolute;
+      border-radius: 50%;
+      top: @border-width;
+    }
+
+    &::before {
+      left: calc(-@border-width / 2);
+    }
+
+    &::after {
+      right: calc(-@border-width / 2);
+    }
+  }
+}
