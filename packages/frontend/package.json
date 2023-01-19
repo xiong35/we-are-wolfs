@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "new": "node ./scripts/newComponent"
   },
   "dependencies": {
     "@preact/signals-react": "^1.2.1",
