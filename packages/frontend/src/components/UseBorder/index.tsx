@@ -7,9 +7,9 @@ export type UseBorderProps = {
 
 export const UseBorder: FC<UseBorderProps> = (props) => {
   return (
-    <span className="use-border">
+    <span className="w-use-border">
       {props.children}
-      <div className="use-border-mask"></div>
+      <div className="w-use-border-mask"></div>
     </span>
   );
 };
