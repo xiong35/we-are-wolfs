@@ -84,8 +84,11 @@ export const TIMEOUT: Record<EGameStatus, number> = {
   SHERIFF_ASSIGN_CHECK: 5,
 };
 
-export type TokenDef = {
+export type IToken = {
+  /** player ID */
   ID: ID;
+  /** token 创建的时间 */
   datetime: number;
+  /** 玩家对应的房间号 */
   roomNumber: string;
 };

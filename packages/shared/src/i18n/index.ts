@@ -1,4 +1,4 @@
-import { ECharacter, EGameStatus } from "../types/gameMeta";
+import { ECharacter, EGameStatus } from "../gameTypes/gameMeta";
 
 type I18NGenerator<K extends keyof any> = Record<K, string>;
 
