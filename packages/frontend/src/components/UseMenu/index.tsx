@@ -4,12 +4,12 @@ import "./index.less";
 
 import { ReactComponent as SVGClose } from "../../assets/close.svg";
 
-type UseMenuProps = {
+export type IUseMenuProps = {
   onCancel: () => void;
   children: React.ReactNode;
 };
 
-export const UseMenu: FC<UseMenuProps> = (props) => {
+export const UseMenu: FC<IUseMenuProps> = (props) => {
   return (
     <div className="use-menu">
       <UseBorder>
