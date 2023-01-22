@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Btn } from "./components/Btn";
 import { UseMenu } from "./components/UseMenu";
 import "./index.less";
 
@@ -7,7 +8,10 @@ function App() {
 
   return (
     <div className="container">
-      <UseMenu onCancel={() => console.log(12)}>123123 </UseMenu>
+      <Btn disabled>123</Btn>
+      <Btn>123456</Btn>
+      <Btn>啊实 打实的</Btn>
+      <Btn>确定</Btn>
     </div>
   );
 }
