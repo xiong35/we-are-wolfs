@@ -6,7 +6,7 @@ export type DialogInfo = {
   timeout: Timeout;
 };
 
-export const dialogTimeLeft = signal<Timeout>(0);
+export const dialogTimeLeft = signal<Timeout>(-1);
 export const toShowDialogs = signal<DialogInfo[]>([]);
 
 export const currentContent = computed<DialogInfo | null>(() =>
@@ -19,8 +19,40 @@ export const currentContent = computed<DialogInfo | null>(() =>
  * @param timeout 显示的秒数
  */
 export function showDialog(toShowContent: string, timeout: number = 5) {
-  toShowDialogs.value.push({
-    content: toShowContent,
-    timeout: timeout,
-  });
+  toShowDialogs.value = [
+    ...toShowDialogs.value,
+    {
+      content: toShowContent,
+      timeout: timeout,
+    },
+  ];
+  tryShowFirstDialog();
+}
+
+export function hideDialog() {
+  dialogTimeLeft.value = -1;
+  clearInterval(timer);
+  timer = undefined;
+  toShowDialogs.value = toShowDialogs.value.slice(1);
+
+  tryShowFirstDialog();
+}
+
+let timer: number | undefined = undefined;
+
+function tryShowFirstDialog() {
+  if (timer) return;
+  if (!currentContent.value) return;
+
+  const time = currentContent.value.timeout;
+
+  dialogTimeLeft.value = time;
+
+  timer = window.setInterval(() => {
+    if (dialogTimeLeft.value === 1) {
+      hideDialog();
+      return;
+    }
+    dialogTimeLeft.value--;
+  }, 1000);
 }
