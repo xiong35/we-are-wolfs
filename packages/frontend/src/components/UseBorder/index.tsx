@@ -12,9 +12,9 @@ export const UseBorder: FC<IUseBorderProps> = ({
   ...res
 }) => {
   return (
-    <span className={classNames("w-use-border", className)} {...res}>
+    <span className={classNames("w-use_border", className)} {...res}>
       {children}
-      <div className="w-use-border-mask"></div>
+      <div className="w-use_border-mask"></div>
     </span>
   );
 };

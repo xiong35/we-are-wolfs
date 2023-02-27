@@ -3,18 +3,19 @@ import { UseBorder } from "../UseBorder";
 import "./index.less";
 
 import { ReactComponent as SVGClose } from "../../assets/close.svg";
+import classNames from "classnames";
 
 export type IUseMenuProps = {
   onCancel: () => void;
   children: React.ReactNode;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-export const UseMenu: FC<IUseMenuProps> = (props) => {
+export const UseMenu: FC<IUseMenuProps> = ({ children, onCancel, ...rest }) => {
   return (
-    <div className="use-menu">
+    <div {...rest} className={classNames("w-use_menu", rest.className)}>
       <UseBorder>
-        {props.children}
-        <SVGClose onClick={props.onCancel} className="cancel" />
+        {children}
+        <SVGClose onClick={onCancel} className="cancel" />
       </UseBorder>
     </div>
   );
