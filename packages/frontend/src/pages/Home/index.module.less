@@ -1,3 +1,36 @@
-.w-home {
-  perspective: placeholder;
+@font-face {
+  font-family: gete;
+  src: url("../../assets/gete.ttf");
+}
+
+.w-home-btns {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  :global {
+    .w-btn {
+      &:not(:last-child) {
+        margin-bottom: 5vh;
+      }
+
+      text-align: center;
+    }
+  }
+}
+
+.w-home-logo {
+  padding-top: 10vh;
+  width: 18vh;
+  margin: auto;
+  display: block;
+}
+
+.w-home-title {
+  margin: 7vh;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bolder;
+  font-family: gete;
 }
