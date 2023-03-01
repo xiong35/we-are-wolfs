@@ -6,5 +6,5 @@ export type ICOMPONENT_NAMEProps = {
 };
 
 export const COMPONENT_NAME: FC<ICOMPONENT_NAMEProps> = (props) => {
-  return <div className={styles["w-K_COMPONENT_NAME"]}></div>;
+  return <div className={styles["w-U_COMPONENT_NAME"]}></div>;
 };

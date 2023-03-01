@@ -12,6 +12,7 @@ if (!dirToCreate) {
 // 得到组件名字
 const componentName = dirToCreate.split("/").pop();
 const kebabizedComponentName = kebabize(componentName);
+const underlinedComponentName = kebabize(componentName, "_");
 
 // 创建目录
 await fs.mkdir(dirToCreate);
@@ -28,6 +29,7 @@ const replacedTemplates = (await Promise.all(templates)).map((template) =>
   template
     .toString()
     .replace(/K_COMPONENT_NAME/g, kebabizedComponentName)
+    .replace(/U_COMPONENT_NAME/g, underlinedComponentName)
     .replace(/COMPONENT_NAME/g, componentName)
 );
 
