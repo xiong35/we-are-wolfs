@@ -1,3 +1,56 @@
-.w-create-room {
-  perspective: placeholder;
+.w-create_room {
+  padding: 1rem 1rem 0;
+  text-align: center;
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .tile-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+
+    // TODO
+    :global {
+      .w-character_tile {
+        flex: 1 1 33%;
+        padding: 1rem 0;
+
+      }
+    }
+  }
+
+  .name,
+  .password {
+    .hint {
+      position: relative;
+      bottom: 0.04em;
+      word-break: keep-all;
+      margin-right: 0.5rem;
+      font-weight: bold;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+
+    input {
+      max-width: calc(100% - 1rem);
+      padding: 0 0.5rem;
+      line-height: 2.4rem;
+      overflow: visible;
+    }
+
+    // .useborder {
+    //   max-width: 50%;
+    // }
+  }
+
+  :global {
+    .w-btn {
+      margin: auto;
+    }
+  }
 }

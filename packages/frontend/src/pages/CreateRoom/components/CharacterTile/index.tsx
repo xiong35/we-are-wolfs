@@ -1,12 +1,13 @@
 import styles from "./index.module.less";
 import { FC } from "react";
 import { Avatar } from "../../../../components/Avatar";
-import { ECharacter } from "@werewolf/shared";
+import { ESetableCharacters } from "@werewolf/shared";
+import classNames from "classnames";
 
 export type ICharacterTileProps = {
   num: number;
-  setNum: (num: number) => void;
-  character: ECharacter;
+  setNum: (num: 1 | -1) => void;
+  character: ESetableCharacters;
 };
 
 export const CharacterTile: FC<ICharacterTileProps> = ({
@@ -15,12 +16,12 @@ export const CharacterTile: FC<ICharacterTileProps> = ({
   character,
 }) => {
   return (
-    <div className={styles["w-character_tile"]}>
+    <div className={classNames(styles["w-character_tile"], "w-character_tile")}>
       <Avatar character={character}></Avatar>
       <div className={styles["controll"]}>
-        <div onClick={() => setNum(num - 1)} className={styles["down"]}></div>
+        <div onClick={() => setNum(-1)} className={styles["down"]}></div>
         <div className={styles["number"]}>{num}</div>
-        <div onClick={() => setNum(num + 1)} className={styles["up"]}></div>
+        <div onClick={() => setNum(1)} className={styles["up"]}></div>
       </div>
     </div>
   );
