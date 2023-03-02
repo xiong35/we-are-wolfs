@@ -1,15 +1,33 @@
-.container.dark {
-  --bg: #111;
-  --on-bg: #f8f8f8;
-  --secondary: #222;
+@black: #111;
+@black-2: #222;
+@white: #f8f8f8;
+@white-2: #eee;
+
+.w-container.dark {
+  --bg: @black;
+  --on-bg: @white;
+  --secondary: @white-2;
 }
 
-.container {
-  --bg: #f8f8f8;
-  --on-bg: #111;
-  --secondary: #eee;
+.w-container.light {
+  --bg: @white;
+  --on-bg: @black;
+  --secondary: @black-2;
+}
+
+.w-container {
+  color: var(--on-bg);
+  fill: var(--on-bg);
+}
+
+.w-main {
+  max-width: 500px;
+  min-height: 100vh;
+  margin: auto;
+  background: var(--bg);
 }
 
 body {
   margin: 0;
+  min-height: 100vw;
 }
