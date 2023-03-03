@@ -1,0 +1,40 @@
+.w-join_room {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 90vh;
+
+  .title {
+    font-weight: bold;
+    font-size: 2rem;
+    padding: 2rem;
+  }
+
+  .pw,
+  .name,
+  .number {
+    .hint {
+      position: relative;
+      bottom: 0.08em;
+      word-break: keep-all;
+      margin-right: 0.5rem;
+      font-weight: bold;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+
+    input {
+      max-width: calc(100% - 1rem);
+      padding: 0 0.5rem;
+      line-height: 2.4rem;
+      overflow: visible;
+    }
+  }
+
+  .spacer {
+    flex: 1;
+  }
+}
