@@ -1,6 +1,6 @@
 import styles from "./index.module.less";
 import { FC, useState } from "react";
-import { Index, IPublicPlayer } from "@werewolf/shared";
+import { Index, IPublicPlayer, None } from "@werewolf/shared";
 import { PlayerListItem } from "./components/PlayerListItem";
 
 export type IPlayerListProps = {
@@ -8,7 +8,7 @@ export type IPlayerListProps = {
 };
 
 export const PlayerList: FC<IPlayerListProps> = ({ playerList }) => {
-  const [target, setTarget] = useState<Index>(-1);
+  const [target, setTarget] = useState<Index>(None);
   return (
     <div className={styles["w-player_list"]}>
       {playerList.map((item) => (

@@ -1,4 +1,5 @@
 import { signal, computed } from "@preact/signals-react";
+import { None } from "@werewolf/shared";
 
 type Timeout = number;
 export type DialogInfo = {
@@ -6,7 +7,7 @@ export type DialogInfo = {
   timeout: Timeout;
 };
 
-export const dialogTimeLeft = signal<Timeout>(-1);
+export const dialogTimeLeft = signal<Timeout>(None);
 export const toShowDialogs = signal<DialogInfo[]>([]);
 
 export const currentContent = computed<DialogInfo | null>(() =>
@@ -30,7 +31,7 @@ export function showDialog(toShowContent: string, timeout: number = 5) {
 }
 
 export function hideDialog() {
-  dialogTimeLeft.value = -1;
+  dialogTimeLeft.value = None;
   clearInterval(timer);
   timer = undefined;
   toShowDialogs.value = toShowDialogs.value.slice(1);
