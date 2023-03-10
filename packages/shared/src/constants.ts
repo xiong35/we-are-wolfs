@@ -11,4 +11,6 @@ export const WS_PATH = "/api" + WS_PATH_CLIPED;
 export const HeaderPlayerID = "w-player-id";
 export const HeaderRoomNumber = "w-room-number";
 
-export const TokenKey = "w-werewolf-token"
+export const TokenKey = "w-werewolf-token";
+
+export const None = -1;

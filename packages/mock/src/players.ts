@@ -3,7 +3,7 @@ import { IPublicPlayer } from "@werewolf/shared";
 export function getMockPlayers(num: number): IPublicPlayer[] {
   const players = [];
   for (let i = 0; i < num; i++) {
-    players.push(genPlayer(i));
+    players.push(genPlayer(i + 1));
   }
   return players;
 }

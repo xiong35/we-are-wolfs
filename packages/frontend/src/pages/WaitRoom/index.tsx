@@ -2,13 +2,17 @@ import styles from "./index.module.less";
 import { FC } from "react";
 import { Btn } from "../../components/Btn";
 import { showDialog } from "../../signals/dialog";
+import { PlayerList } from "../../components/PlayerList";
+import { getMockPlayers } from "@werewolf/mock";
 
 export type IWaitRoomProps = {};
+
+const players = getMockPlayers(9);
 
 const WaitRoom: FC<IWaitRoomProps> = (props) => {
   return (
     <div className={styles["w-wait_room"]}>
-      {/* <RoomPlayerList :playerList="playerList"></RoomPlayerList> */}
+      <PlayerList playerList={players}></PlayerList>
       <div className={styles["room_number"]}>房间号：{"roomNumber"}</div>
 
       <div id="w-qr-code"></div>

@@ -1,0 +1,91 @@
+.w-player_list_item {
+  @size: 6rem;
+  @icon-size: 0.25 * @size;
+  @offset: -0.5 * @icon-size;
+
+  display: flex;
+  justify-content: center;
+
+  &-box {
+    width: @size;
+    height: @size;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 5px;
+    border: 2px solid;
+    background-color: var(--bg-2);
+    position: relative;
+
+    font-size: 1.5rem;
+  }
+
+  &-index {
+    top: @offset;
+    left: @offset;
+    border: 1px solid;
+    font-size: 0.5em;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+
+    &-content {
+      background-color: transparent;
+      line-height: 1em;
+    }
+  }
+
+  &-skull {
+    bottom: @offset;
+    right: @offset;
+    background-color: transparent;
+  }
+
+  &-sherrif {
+    top: @offset;
+    right: @offset;
+    background-color: transparent;
+  }
+
+  &-index,
+  &-sherrif,
+  &-skull {
+    position: absolute;
+    width: @icon-size;
+    height: @icon-size;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  &-skull.isDying {
+    @keyframes shine {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    animation: shine 0.7s linear infinite alternate;
+  }
+
+  &-box.empty {
+    background-color: rgb(131, 131, 131);
+    opacity: 30%;
+  }
+
+  &-box.isDead {
+    opacity: 50%;
+  }
+
+  &-box.isChosen {
+    filter: brightness(1.7);
+    box-shadow: var(--on-bg) 2px 2px 0px 0px;
+  }
+}
