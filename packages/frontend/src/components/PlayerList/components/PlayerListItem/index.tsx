@@ -5,6 +5,7 @@ import { Index, IPublicPlayer, None } from "@werewolf/shared";
 import { getIsActing } from "../../../../signals/actions";
 import { ReactComponent as SvgSheriff } from "../../../../assets/sheriff.svg";
 import { ReactComponent as SvgSkull } from "../../../../assets/skull.svg";
+import { formatName } from "./utils/formatName";
 
 type IEmptyPlayer = {
   isEmpty: true;
@@ -46,17 +47,19 @@ export const PlayerListItem: FC<IPlayerListItemProps> = ({
   /** 是否被选中 */
   const isChosen: boolean = player.index === target && isActing;
 
+  const { fontSize, formattedName } = formatName(player.name);
+
   return (
     <div className={classNames("w-player_list_item", className)}>
       <div
-        style={{ cursor: isActing ? "pointer" : "not-allowed" }}
+        style={{ cursor: isActing ? "pointer" : "not-allowed", fontSize }}
         className={classNames("w-player_list_item-box", {
           isDead: isAlive,
           isChosen,
         })}
         onClick={() => setTarget(target === index ? None : index)}
       >
-        {name.slice(0, 3) + (name.length > 3 ? "..." : "")}
+        {formattedName}
         <div className="w-player_list_item-index">
           <span className="w-player_list_item-index-content">{index}</span>
         </div>

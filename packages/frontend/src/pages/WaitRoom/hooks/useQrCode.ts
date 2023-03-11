@@ -8,8 +8,6 @@ export function useQrCode() {
   const { password, roomNumber } = useUrlInfo();
 
   useEffect(() => {
-    console.log(qrMountPoint.current);
-
     if (!qrMountPoint.current) return;
 
     const qr = new QRCode(qrMountPoint.current, {
