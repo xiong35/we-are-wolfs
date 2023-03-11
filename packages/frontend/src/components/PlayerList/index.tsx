@@ -13,6 +13,7 @@ export const PlayerList: FC<IPlayerListProps> = ({ playerList }) => {
     <div className={styles["w-player_list"]}>
       {playerList.map((item) => (
         <PlayerListItem
+          key={item.index}
           isEmpty={false}
           target={target}
           setTarget={setTarget}

@@ -96,9 +96,5 @@ export type IPlayer = IPublicPlayer & {
     /**被哪个角色杀死的 */
     fromCharacter: ECharacter;
   } | null;
-  /**
-   * string + 时间戳 的 token
-   * #TODO 曾是 _id
-   */
-  id: ID;
+  _id: ID;
 };
