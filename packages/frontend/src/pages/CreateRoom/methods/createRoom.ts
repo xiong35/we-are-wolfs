@@ -1,4 +1,5 @@
 import { ESetableCharacters } from "@werewolf/shared";
+import { log } from "@werewolf/shared";
 import sha256 from "sha256";
 import { showDialog } from "../../../signals/dialog";
 
@@ -55,7 +56,6 @@ export async function createRoom(
   //     },
   //   ];
   // }
-  
-  console.log({nickname, password, characters});
-  
+
+  log({ nickname, password, characters });
 }
