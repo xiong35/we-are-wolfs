@@ -82,19 +82,21 @@ export type IPublicPlayer = {
   canBeVoted: boolean;
 };
 
+export type IDieInfo = {
+  /**第几天死的 */
+  at: Day;
+  /**被哪些人杀死的(名字) */
+  fromIndex: Index[];
+  /**被哪个角色杀死的 */
+  fromCharacter: ECharacter;
+} | null;
+
 export type IPlayer = IPublicPlayer & {
   /**游戏角色 */
   character: ECharacter;
   /**允许自定义 */
   characterStatus?: ICharacterStatus;
   /** 具体死亡信息, null 则为还存活 */
-  die: {
-    /**第几天死的 */
-    at: Day;
-    /**被哪些人杀死的(名字) */
-    fromIndex: Index[];
-    /**被哪个角色杀死的 */
-    fromCharacter: ECharacter;
-  } | null;
+  die: IDieInfo;
   _id: ID;
 };
