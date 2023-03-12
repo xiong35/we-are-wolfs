@@ -21,6 +21,7 @@ importers:
       koa-body: ^6.0.1
       koa-logger: ^3.2.1
       koa-router: ^12.0.0
+      nanoid: ^4.0.1
       nodemon: ^1.19.4
       pm2: ^3.5.2
       socket.io: ^4.5.3
@@ -33,6 +34,7 @@ importers:
       koa-body: 6.0.1
       koa-logger: 3.2.1
       koa-router: 12.0.0
+      nanoid: 4.0.1
       socket.io: 4.5.3
     devDependencies:
       '@types/koa': 2.13.5
@@ -3192,6 +3194,12 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: true
+
+  /nanoid/4.0.1:
+    resolution: {integrity: sha512-udKGtCCUafD3nQtJg9wBhRP3KMbPglUsgV5JVsXhvyBs/oefqb4sqMEhKBBgqZncYowu58p1prsZQBYvAj/Gww==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
 
   /nanomatch/1.2.13:
     resolution: {integrity: sha512-fpoe2T0RbHwBTBUOftAfBPaDEi06ufaUai0mE6Yn1kacc3SnTErfb/h+X94VXzI64rKFHYImXSvdwGGCmwOqCA==}

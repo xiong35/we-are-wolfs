@@ -5,8 +5,8 @@ export const SERVER_DOMAIN = "http://localhost:3011";
 
 export const SERVER_BASE_URL = SERVER_DOMAIN + "/api";
 
-export const WS_PATH_CLIPED = "/werewolf-ws";
-export const WS_PATH = "/api" + WS_PATH_CLIPED;
+export const WS_PATH_CLIPPED = "/werewolf-ws";
+export const WS_PATH = "/api" + WS_PATH_CLIPPED;
 
 export const HeaderPlayerID = "w-player-id";
 export const HeaderRoomNumber = "w-room-number";

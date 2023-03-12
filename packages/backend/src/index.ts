@@ -5,6 +5,8 @@ import logger from "koa-logger";
 import { Server } from "socket.io";
 
 import cors from "@koa/cors";
+import { useHandleError } from "./middleware/handleError";
+import { WS_PATH_CLIPPED } from "@werewolf/shared";
 
 const app = new Koa<
   { isKnownError: Boolean },
@@ -18,12 +20,13 @@ const io = new Server(httpServer, {
     origin: "http://127.0.0.1:3000",
     methods: ["GET", "POST"],
   },
-  path: "WS_PATH_CLIPED",
+  path: WS_PATH_CLIPPED,
 });
 
 app
   .use(logger())
   .use(cors({ credentials: true, origin: "http://localhost:3000" }))
+  .use(useHandleError())
   .use(KoaBody());
 
 httpServer.listen(3011);
