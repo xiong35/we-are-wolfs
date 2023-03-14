@@ -1,4 +1,4 @@
-import { IHttpRes, IJoinRoomReq, IJoinRoomResp } from "@werewolf/shared";
+import { IHttpResp, IJoinRoomReq, IJoinRoomResp } from "@werewolf/shared";
 import { IMiddleware } from "koa-router";
 import { Room } from "../../models/RoomModel";
 
@@ -9,7 +9,7 @@ export const joinRoom: IMiddleware = async (ctx) => {
   const room = Room.getRoom(roomNumber);
   const player = room.playerJoin(name, password);
 
-  const ret: IHttpRes<IJoinRoomResp> = {
+  const ret: IHttpResp<IJoinRoomResp> = {
     status: 200,
     msg: "ok",
     data: {
