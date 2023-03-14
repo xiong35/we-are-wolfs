@@ -1,6 +1,4 @@
-import fs from "fs";
-
-let _log: boolean = fs.existsSync("./_log");
+let _log: boolean = true;
 
 export function log(...args: any[]) {
   if (_log) {
