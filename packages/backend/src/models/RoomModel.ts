@@ -46,7 +46,11 @@ export class Room implements IRoom {
     password,
   }: ICreateRoomReq & { creator: Player }) {
     if (!checkNeedingCharacters(characters)) {
-      // throw new WError(400, "人数配比不合法");
+      throw new WError(400, "人数配比不合法");
+    }
+
+    if (!creator) {
+      throw new WError(500, "未提供 player");
     }
 
     let tryTime = 20;
@@ -83,7 +87,7 @@ export class Room implements IRoom {
   }
 
   playerJoin(name: string, password?: string): Player {
-    const nameReg = /^.{1,15}$/;
+    const nameReg = /^.{1,30}$/;
     if (!nameReg.test(name)) {
       throw new WError(400, "昵称不合法");
     }

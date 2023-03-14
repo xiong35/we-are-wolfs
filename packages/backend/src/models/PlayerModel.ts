@@ -7,6 +7,7 @@ import {
 } from "@werewolf/shared";
 import { Room } from "./RoomModel";
 import { nanoid } from "nanoid";
+import { WError } from "../utils/error";
 
 export class Player implements IPlayer {
   id: string;
@@ -24,6 +25,8 @@ export class Player implements IPlayer {
   characterStatus?: ICharacterStatus;
 
   constructor(public name: string, public index: number) {
+    if (!name) throw new WError(400, "未提供玩家昵称");
+    if (!index) throw new WError(400, "未提供玩家序号");
     this.id = nanoid();
   }
 
