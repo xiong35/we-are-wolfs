@@ -46,7 +46,7 @@ export class Room implements IRoom {
     password,
   }: ICreateRoomReq & { creator: Player }) {
     if (!checkNeedingCharacters(characters)) {
-      throw new WError(401, "人数配比不合法");
+      // throw new WError(400, "人数配比不合法");
     }
 
     let tryTime = 20;
@@ -85,13 +85,13 @@ export class Room implements IRoom {
   playerJoin(name: string, password?: string): Player {
     const nameReg = /^.{1,15}$/;
     if (!nameReg.test(name)) {
-      throw new WError(401, "昵称不合法");
+      throw new WError(400, "昵称不合法");
     }
     if (this.password && this.password !== password) {
-      throw new WError(401, "密码错误");
+      throw new WError(400, "密码错误");
     }
     if (this.remainingIndexes.length === 0) {
-      throw new WError(401, "房间已满");
+      throw new WError(400, "房间已满");
     }
 
     const index = this.remainingIndexes.shift(); // assign smallest index
@@ -115,19 +115,19 @@ export class Room implements IRoom {
 
   getPlayerById(id: ID): Player {
     const player = this.playersMap[id];
-    if (!player) throw new WError(401, "id 错误");
+    if (!player) throw new WError(400, "id 错误");
     return player;
   }
 
   getPlayerByIndex(index: Index): Player {
     const player = this.players[index];
-    if (!player) throw new WError(401, "编号错误");
+    if (!player) throw new WError(400, "编号错误");
     return player;
   }
 
   static getRoom(number: string): Room {
     const room = Room.roomMap[number];
-    if (!room) throw new WError(400, "未找到房间号");
+    if (!room) throw new WError(4000, "未找到房间号");
     return room;
   }
 
