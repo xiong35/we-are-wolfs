@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
-    "module": "ES2015", // 编译生成的模块系统代码
-    "target": "es2017", // 指定ecmascript的目标版本
+    "module": "commonjs",
+    "target": "es6",
     "noImplicitAny": true, // 禁止隐式any类型
     "outDir": "./dist",
     "sourceMap": false,
     "allowJs": false, // 是否允许出现js
     "newLine": "LF",
-    "allowSyntheticDefaultImports": true, // 允许从没有设置默认导出的模块中默认导入
+    "esModuleInterop": true,
     "moduleResolution": "node"
   },
   "include": [
-    "src/**/*"
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
