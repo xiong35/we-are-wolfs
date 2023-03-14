@@ -18,7 +18,7 @@ export async function request<T = {}>(config: AxiosRequestConfig) {
   instance.interceptors.request.use(
     (config) => {
       const token = getToken();
-      config.headers[HeaderPlayerID] = token?.ID;
+      config.headers[HeaderPlayerID] = token?.id;
       config.headers[HeaderRoomNumber] = token?.roomNumber;
       return config;
     },

@@ -11,7 +11,7 @@ import {
 } from "@werewolf/shared";
 
 const defaultPlayer: IPlayer = {
-  _id: "",
+  id: "",
   character: "",
   exileVotes: [],
   index: 1,

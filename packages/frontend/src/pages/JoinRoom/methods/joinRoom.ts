@@ -27,7 +27,7 @@ export async function joinRoom(form: IJoinRoomReq) {
   //     },
   //   });
 
-  //   setToken(res.data.ID, roomNumber.value);
+  //   setToken(res.data.id, roomNumber.value);
   // }
 }
 

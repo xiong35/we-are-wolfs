@@ -9,9 +9,9 @@ function isToken(token: any): token is IToken {
   );
 }
 
-export function setToken(ID: string, roomNumber: string) {
+export function setToken(id: string, roomNumber: string) {
   const token: IToken = {
-    ID,
+    id,
     datetime: Date.now(),
     roomNumber,
   };

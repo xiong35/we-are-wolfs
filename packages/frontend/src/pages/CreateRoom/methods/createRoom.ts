@@ -43,7 +43,7 @@ export async function createRoom(
   //       number: data.roomNumber,
   //     },
   //   });
-  //   setToken(data.ID, data.roomNumber);
+  //   setToken(data.id, data.roomNumber);
   //   players.value = [
   //     {
   //       index: 1,

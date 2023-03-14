@@ -1,7 +1,7 @@
 import { ICharacterStatus } from "./character";
 import { ECharacter, EGameStatus } from "./gameMeta";
 
-/** 玩家 ID */
+/** 玩家 id */
 export type ID = string;
 /** 玩家编号，从 1 开始 */
 export type Index = number;
@@ -17,7 +17,7 @@ export type Day = number;
 export type IRoomMeta = {
   /** 房间号码, 6 位数字 */
   roomNumber: string;
-  /** 创建者 ID */
+  /** 创建者 id */
   creatorID: ID;
   /** 是否设置密码, 存放哈希过的密码 */
   password?: string;
@@ -98,5 +98,5 @@ export type IPlayer = IPublicPlayer & {
   characterStatus?: ICharacterStatus;
   /** 具体死亡信息, null 则为还存活 */
   die: IDieInfo;
-  _id: ID;
+  id: ID;
 };

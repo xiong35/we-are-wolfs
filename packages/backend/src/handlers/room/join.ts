@@ -13,7 +13,7 @@ export const joinRoom: IMiddleware = async (ctx) => {
     status: 200,
     msg: "ok",
     data: {
-      ID: player._id,
+      id: player.id,
       index: player.index,
       needingCharacters: room.needingCharacters,
     },

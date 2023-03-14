@@ -85,8 +85,8 @@ export const TIMEOUT: Record<EGameStatus, number> = {
 };
 
 export type IToken = {
-  /** player ID */
-  ID: ID;
+  /** player id */
+  id: ID;
   /** token 创建的时间 */
   datetime: number;
   /** 玩家对应的房间号 */

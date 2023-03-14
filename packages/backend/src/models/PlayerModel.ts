@@ -9,7 +9,7 @@ import { Room } from "./RoomModel";
 import { nanoid } from "nanoid";
 
 export class Player implements IPlayer {
-  _id: string;
+  id: string;
   isAlive = true;
   isSheriff = false;
   exileVotes: number[] = [];
@@ -24,7 +24,7 @@ export class Player implements IPlayer {
   characterStatus?: ICharacterStatus;
 
   constructor(public name: string, public index: number) {
-    this._id = nanoid();
+    this.id = nanoid();
   }
 
   /**

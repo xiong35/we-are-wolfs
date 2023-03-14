@@ -20,7 +20,7 @@ export const createRoom: IMiddleware = async (ctx) => {
     msg: "ok",
     data: {
       roomNumber: room.roomNumber,
-      ID: creator._id,
+      id: creator.id,
     },
   };
 

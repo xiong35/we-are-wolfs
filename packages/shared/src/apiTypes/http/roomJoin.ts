@@ -10,8 +10,8 @@ export type IJoinRoomReq = {
 };
 
 export type IJoinRoomResp = {
-  /** 后端分配到的 ID */
-  ID: ID;
+  /** 后端分配到的 id */
+  id: ID;
   index: Index;
   /** 后端分配的角色 */
   needingCharacters: ECharacter[];

@@ -68,7 +68,7 @@ export class Room implements IRoom {
       throw new WError(500, "创建错误, 请重试!");
     }
 
-    this.creatorID = creator._id;
+    this.creatorID = creator.id;
     this.players = [creator];
     this.needingCharacters = characters; // default index=1
     this.remainingIndexes = new Array(characters.length - 1)
@@ -104,7 +104,7 @@ export class Room implements IRoom {
 
   private addPlayer(player: Player) {
     this.players[player.index] = player;
-    this.playersMap[player._id] = player;
+    this.playersMap[player.id] = player;
   }
 
   choosePublicInfo(): IPublicPlayer[] {

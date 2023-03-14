@@ -17,5 +17,5 @@ export type ICreateRoomResp = {
   /** 后端分配的房间号 */
   roomNumber: string;
   /** 后端为 creator 分配的 id */
-  ID: ID;
+  id: ID;
 };
