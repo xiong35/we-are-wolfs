@@ -5,9 +5,9 @@
 import { ECharacter, IPublicPlayer } from "../../gameTypes";
 
 /** 不需要请求体 */
-export type IInitRoomReq = null;
+export type IGetRoomMetaReq = null;
 
-export type InitRoomResp = {
+export type IGetRoomMetaResp = {
   /**
    * 已加入房间的玩家
    */

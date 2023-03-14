@@ -1,7 +1,7 @@
 import {
   HeaderPlayerID,
   HeaderRoomNumber,
-  IHttpRes,
+  IHttpResp,
   SERVER_BASE_URL,
 } from "@werewolf/shared";
 import axios, { AxiosRequestConfig } from "axios";
@@ -27,7 +27,7 @@ export async function request<T = {}>(config: AxiosRequestConfig) {
     }
   );
 
-  const res = await instance<IHttpRes<T>>(config);
+  const res = await instance<IHttpResp<T>>(config);
 
   let errorMsg: string | null = null;
   if (res.status !== 200) {
