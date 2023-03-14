@@ -7,6 +7,7 @@ import { Server } from "socket.io";
 import cors from "@koa/cors";
 import { useHandleError } from "./middleware/handleError";
 import { WS_PATH_CLIPPED } from "@werewolf/shared";
+import router from "./routes";
 
 const app = new Koa<
   { isKnownError: Boolean },
@@ -27,7 +28,10 @@ app
   .use(logger())
   .use(cors({ credentials: true, origin: "http://localhost:3000" }))
   .use(useHandleError())
-  .use(KoaBody());
+  .use(KoaBody())
+
+  .use(router.routes())
+  .use(router.allowedMethods());
 
 httpServer.listen(3011);
 

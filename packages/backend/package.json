@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/koa": "^2.13.5",
     "@types/koa-logger": "^3.1.2",
+    "@types/koa-router": "^7.4.4",
     "@types/koa__cors": "^3.3.0",
     "nodemon": "^1.19.4",
     "pm2": "^3.5.2",

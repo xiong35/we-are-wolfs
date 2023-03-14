@@ -1,5 +1,7 @@
+import { HttpStatusCode } from "../../utils";
+
 export interface IHttpRes<T = {}> {
-  status: number;
+  status: HttpStatusCode;
   msg: string;
   data: T;
 }

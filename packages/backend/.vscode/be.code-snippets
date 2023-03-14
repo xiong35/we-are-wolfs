@@ -1,0 +1,23 @@
+{
+	"create a http handler": {
+		"scope": "typescript",
+		"prefix": "h#",
+		"body": [
+			"import { IHttpRes } from \"@werewolf/shared\";",
+			"import { IMiddleware } from \"koa-router\";",
+			"",
+			"export const ${TM_FILENAME/(.*)\\..+$/$1/}: IMiddleware = async (ctx) => {",
+			"  const req = ctx.request.body as ;",
+			"",
+			"  const ret: IHttpRes = {",
+			"    status: 200,",
+			"    msg: \"ok\",",
+			"    data: {}",
+			"  };",
+			"",
+			"  ctx.body = ret;",
+			"};",
+		],
+		"description": "create a http handler"
+	},
+}
