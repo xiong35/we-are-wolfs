@@ -3,9 +3,10 @@ import { Room } from "../../models/RoomModel";
 
 export const logRoom: IMiddleware = async (ctx) => {
   const roomNumber = ctx.params.roomNumber;
+  const room = Room.getRoom(roomNumber);
 
   console.log("# logRoom", roomNumber);
-  console.log("# logRoom", Room.getRoom(roomNumber));
+  console.log("# logRoom", room);
 
-  ctx.body = "ok";
+  ctx.body = { ...room, timer: undefined, clearSelfTimer: undefined };
 };

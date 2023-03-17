@@ -23,7 +23,7 @@ export class Room implements IRoom {
   gameStatus: EGameStatus[] = ["WOLF_KILL"];
   toFinishPlayers: Set<number> = new Set<Index>();
   timer: NodeJS.Timeout;
-  players: Player[];
+  players: Player[]=[];
   private playersMap: Record<ID, Player> = {};
 
   get curStatus(): EGameStatus {
@@ -73,7 +73,7 @@ export class Room implements IRoom {
     }
 
     this.creatorID = creator.id;
-    this.players = [creator];
+    this.addPlayer(creator)
     this.needingCharacters = characters; // default index=1
     this.remainingIndexes = new Array(characters.length - 1)
       .fill(0)
@@ -131,7 +131,7 @@ export class Room implements IRoom {
 
   static getRoom(number: string): Room {
     const room = Room.roomMap[number];
-    if (!room) throw new WError(4000, "未找到房间号");
+    if (!room) throw new WError(400, "未找到房间号");
     return room;
   }
 
