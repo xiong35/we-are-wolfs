@@ -4,13 +4,14 @@ import { UseBorder } from "../../components/UseBorder";
 import { Btn } from "../../components/Btn";
 import { useQueryInfo } from "./hooks/useQueryInfo";
 import { useForm } from "./hooks/useForm";
-import { joinRoom } from "./methods/joinRoom";
+import { useJoinRoom } from "./hooks/useJoinRoom";
 
 export type IJoinRoomProps = {};
 
 const JoinRoom: FC<IJoinRoomProps> = (props) => {
   const { initialPassword, initialRoomNumber } = useQueryInfo();
   const { form, setField } = useForm(initialPassword, initialRoomNumber);
+  const joinRoom = useJoinRoom();
 
   return (
     <div className={styles["w-join_room"]}>
