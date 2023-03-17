@@ -7,6 +7,7 @@ import { needingCharacters } from "../../../signals/game";
 
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../../utils/token";
+import { PASSWORD, ROOM_NUMBER } from "../../../constants/searchPrams";
 
 export function useJoinRoom() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export function useJoinRoom() {
 
     navigate({
       pathname: "/waitRoom",
-      search: `?pw=${password}&number=${roomNumber}`,
+      search: `?${PASSWORD}=${password}&${ROOM_NUMBER}=${roomNumber}`,
     });
 
     setToken(res.id, roomNumber);
