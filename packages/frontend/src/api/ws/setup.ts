@@ -1,5 +1,6 @@
 import { SERVER_DOMAIN, WSEvents, WS_PATH } from "@werewolf/shared";
 import io from "socket.io-client";
+import { on } from "./tsHelper";
 
 export let socket: SocketIOClient.Socket;
 
@@ -17,7 +18,9 @@ export function setupSocket(roomNumber: string) {
   });
 
   // TODO
-  // on(socket, WSEvents.CHANGE_STATUS, changeStatus);
+  on(socket, WSEvents.PING, (ping) => {
+    console.log(ping);
+  });
   // on(socket, WSEvents.GAME_BEGIN, gameBegin);
   // on(socket, WSEvents.GAME_END, gameEnd);
   // on(socket, WSEvents.ROOM_JOIN, roomJoin);

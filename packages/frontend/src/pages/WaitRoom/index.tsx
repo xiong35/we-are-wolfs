@@ -7,6 +7,8 @@ import { needingCharacters, players, self } from "../../signals/game";
 import { useUrlInfo } from "./hooks/useUrlInfo";
 import QRCode from "easyqrcodejs";
 import { useQrCode } from "./hooks/useQrCode";
+import { socket } from "../../api/ws/setup";
+import { WSEvents } from "@werewolf/shared";
 
 export type IWaitRoomProps = {};
 
@@ -27,7 +29,14 @@ const WaitRoom: FC<IWaitRoomProps> = (props) => {
           </Btn>
         )}
 
-        <Btn onClick={() => showDialog("暂未实现")}>查看规则</Btn>
+        <Btn
+          onClick={() => {
+            socket.emit(WSEvents.PING, "ping");
+            showDialog("暂未实现");
+          }}
+        >
+          查看规则
+        </Btn>
       </div>
     </div>
   );

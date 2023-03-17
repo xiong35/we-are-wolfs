@@ -19,6 +19,7 @@ export type MapWSEvent2Payload = {
   /** 结束游戏 */
   [WSEvents.GAME_END]: IGameEndMsg;
   [WSEvents.FE_JOIN_ROOM]: string;
+  [WSEvents.PING]: "PING";
 };
 
 export enum WSEvents {
@@ -28,4 +29,5 @@ export enum WSEvents {
   SHOW_MSG = "SHOW_MSG",
   GAME_END = "GAME_END",
   FE_JOIN_ROOM = "FE_JOIN_ROOM",
+  PING = "PING",
 }

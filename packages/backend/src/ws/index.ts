@@ -12,5 +12,10 @@ export function setup(io: Server) {
         socket.join(roomNumber);
       }
     );
+
+    socket.on(WSEvents.PING, (ping: MapWSEvent2Payload[WSEvents.PING]) => {
+      console.log("# wx index - ping", ping, socket.id);
+      socket.emit(WSEvents.PING, "PING");
+    });
   });
 }
