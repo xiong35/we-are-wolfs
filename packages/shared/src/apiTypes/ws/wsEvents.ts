@@ -3,6 +3,7 @@ import { IGameEndMsg } from "./gameEnd";
 import { IRoomJoinMsg } from "./roomJoin";
 import { IShowMsgMsg } from "./showMsg";
 
+/** 后端向前端发送的 socket 信息 */
 export type MapWSEvent2Payload = {
   //// 房间相关 ////
   /** 有人加入房间 */
@@ -17,6 +18,7 @@ export type MapWSEvent2Payload = {
   [WSEvents.SHOW_MSG]: IShowMsgMsg;
   /** 结束游戏 */
   [WSEvents.GAME_END]: IGameEndMsg;
+  [WSEvents.FE_JOIN_ROOM]: string;
 };
 
 export enum WSEvents {
@@ -25,4 +27,5 @@ export enum WSEvents {
   CHANGE_STATUS = "CHANGE_STATUS",
   SHOW_MSG = "SHOW_MSG",
   GAME_END = "GAME_END",
+  FE_JOIN_ROOM = "FE_JOIN_ROOM",
 }

@@ -8,6 +8,7 @@ import cors from "@koa/cors";
 import { useHandleError } from "./middleware/handleError";
 import { WS_PATH_CLIPPED } from "@werewolf/shared";
 import router from "./routes";
+import { setup } from "./ws";
 
 const app = new Koa<
   { isKnownError: Boolean },
@@ -23,6 +24,8 @@ const io = new Server(httpServer, {
   },
   path: WS_PATH_CLIPPED,
 });
+
+setup(io);
 
 app
   .use(logger())

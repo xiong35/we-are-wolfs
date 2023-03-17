@@ -8,7 +8,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { showDialog } from "../../signals/dialog";
 import { getToken } from "../../utils/token";
 
-export async function request<T = {}>(config: AxiosRequestConfig) {
+export async function request<T = {}>(config: Partial<AxiosRequestConfig>) {
   const instance = axios.create({
     baseURL: SERVER_BASE_URL,
     timeout: 60000,
