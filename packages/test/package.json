@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "description": "",
-  "main": "index.js",
+  "exports": "./src/index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon",
     "build": "rm -rf dist && tsc"

@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "noImplicitAny": true, // 禁止隐式any类型
-    "outDir": "./dist",
-    "sourceMap": false,
-    "allowJs": false, // 是否允许出现js
-    "newLine": "LF",
+    "module": "es2022",
+    "target": "es2022",
     "esModuleInterop": true,
     "moduleResolution": "node"
   },
