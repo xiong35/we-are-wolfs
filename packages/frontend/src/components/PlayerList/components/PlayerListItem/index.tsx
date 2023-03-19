@@ -7,22 +7,12 @@ import { ReactComponent as SvgSheriff } from "../../../../assets/sheriff.svg";
 import { ReactComponent as SvgSkull } from "../../../../assets/skull.svg";
 import { formatName } from "./utils/formatName";
 
-type IEmptyPlayer = {
-  isEmpty: true;
-  player: number;
-  target?: never;
-  setTarget?: never;
-};
-
-type INoneEmptyPlayer = {
-  isEmpty: false;
+export type IPlayerListItemProps = {
+  isEmpty: boolean;
   player: IPublicPlayer;
   target: Index;
   setTarget: (target: Index) => void;
-};
-
-export type IPlayerListItemProps = (IEmptyPlayer | INoneEmptyPlayer) &
-  React.HTMLAttributes<HTMLDivElement>;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 export const PlayerListItem: FC<IPlayerListItemProps> = ({
   isEmpty,
@@ -34,8 +24,8 @@ export const PlayerListItem: FC<IPlayerListItemProps> = ({
   if (isEmpty) {
     return (
       <div className={classNames("w-player_list_item", className)}>
-        <div v-else className="w-player_list_item-box empty">
-          <span className="index">{player}</span>
+        <div className="w-player_list_item-box empty">
+          <span className="index">{player.index}</span>
         </div>
       </div>
     );

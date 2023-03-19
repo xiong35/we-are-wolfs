@@ -5,7 +5,7 @@ import { ESetableCharacters } from "@werewolf/shared";
 import { UseBorder } from "../../components/UseBorder";
 import { Btn } from "../../components/Btn";
 import { useCharacters } from "./hooks/useCharacters";
-import { createRoom } from "./methods/createRoom";
+import { useCreateRoom } from "./hooks/useCreateRoom";
 
 export type ICreateRoomProps = {};
 
@@ -13,6 +13,8 @@ const CreateRoom: FC<ICreateRoomProps> = (props) => {
   const { characters, setCharacter } = useCharacters();
   const [nickName, setNickName] = useState("");
   const [password, setPassword] = useState("");
+
+  const createRoom = useCreateRoom();
 
   return (
     <div className={styles["w-create_room"]}>

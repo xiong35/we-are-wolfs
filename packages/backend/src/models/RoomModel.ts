@@ -23,7 +23,7 @@ export class Room implements IRoom {
   gameStatus: EGameStatus[] = ["WOLF_KILL"];
   toFinishPlayers: Set<number> = new Set<Index>();
   timer: NodeJS.Timeout;
-  players: Player[]=[];
+  players: Player[] = [];
   private playersMap: Record<ID, Player> = {};
 
   get curStatus(): EGameStatus {
@@ -73,7 +73,7 @@ export class Room implements IRoom {
     }
 
     this.creatorID = creator.id;
-    this.addPlayer(creator)
+    this.addPlayer(creator);
     this.needingCharacters = characters; // default index=1
     this.remainingIndexes = new Array(characters.length - 1)
       .fill(0)
@@ -112,9 +112,7 @@ export class Room implements IRoom {
   }
 
   choosePublicInfo(): IPublicPlayer[] {
-    return this.players
-      .map((p) => p.getPublic(this))
-      .sort((a, b) => a.index - b.index);
+    return this.players.map((p) => p.getPublic(this));
   }
 
   getPlayerById(id: ID): Player {

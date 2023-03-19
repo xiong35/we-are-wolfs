@@ -1,9 +1,7 @@
 import { IJoinRoomReq } from "@werewolf/shared";
 import sha256 from "sha256";
 import { joinRoomReq } from "../../../api/http/room";
-import { setupSocket } from "../../../api/ws/setup";
 import { showDialog } from "../../../signals/dialog";
-import { needingCharacters } from "../../../signals/game";
 
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../../utils/token";
@@ -25,16 +23,12 @@ export function useJoinRoom() {
     if (!res) return showDialog("加入房间失败");
 
     showDialog("成功加入房间!");
-    setupSocket(roomNumber);
-
-    needingCharacters.value = res.needingCharacters;
+    setToken(res.id, roomNumber);
 
     navigate({
       pathname: "/waitRoom",
       search: `?${PASSWORD}=${password}&${ROOM_NUMBER}=${roomNumber}`,
     });
-
-    setToken(res.id, roomNumber);
   }
 
   return joinRoom;

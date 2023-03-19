@@ -5,7 +5,7 @@
 import { ECharacter, IPublicPlayer } from "../../gameTypes";
 
 /** 不需要请求体 */
-export type IGetRoomMetaReq = null;
+export type IGetRoomMetaReq = never;
 
 export type IGetRoomMetaResp = {
   /**

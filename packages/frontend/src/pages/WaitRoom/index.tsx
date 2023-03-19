@@ -9,12 +9,16 @@ import QRCode from "easyqrcodejs";
 import { useQrCode } from "./hooks/useQrCode";
 import { socket } from "../../api/ws/setup";
 import { WSEvents } from "@werewolf/shared";
+import { useSetupRoom } from "./hooks/useSetupRoom";
 
 export type IWaitRoomProps = {};
 
 const WaitRoom: FC<IWaitRoomProps> = (props) => {
   const canBegin = needingCharacters.value.length === players.value.length;
   const { qrMountPoint } = useQrCode();
+
+  useSetupRoom();
+
   return (
     <div className={styles["w-wait_room"]}>
       <PlayerList playerList={players.value} />

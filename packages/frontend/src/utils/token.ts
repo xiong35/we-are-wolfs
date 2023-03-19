@@ -3,7 +3,7 @@ import { IToken, TokenKey } from "@werewolf/shared";
 function isToken(token: any): token is IToken {
   return (
     token &&
-    typeof token.ID === "string" &&
+    typeof token.id === "string" &&
     typeof token.roomNumber === "string" &&
     typeof token.datetime === "number"
   );
