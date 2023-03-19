@@ -1,13 +1,11 @@
 import { CLIENT_BASE_URL } from "@werewolf/shared";
 import QRCode from "easyqrcodejs";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useUrlInfo } from "./useUrlInfo";
 
-export function useQrCode() {
+export function useQrCode(urlInfo: ReturnType<typeof useUrlInfo>) {
   const qrMountPoint = useRef<HTMLDivElement>(null);
-  const { password, roomNumber } = useUrlInfo();
-
-  console.log({ password, roomNumber });
+  const { password, roomNumber } = urlInfo;
 
   useEffect(() => {
     if (!qrMountPoint.current) return;

@@ -25,7 +25,7 @@ const defaultPlayer: IPlayer = {
 };
 
 /** 所有玩家的公开信息 */
-export const players = signal<IPublicPlayer[]>(getMockPlayers(9));
+export const players = signal<IPublicPlayer[]>([]);
 /** 角色配置 */
 export const needingCharacters = signal<ECharacter[]>([]);
 /** 自己的详细状态 */

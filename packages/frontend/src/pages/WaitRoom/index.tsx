@@ -15,14 +15,15 @@ export type IWaitRoomProps = {};
 
 const WaitRoom: FC<IWaitRoomProps> = (props) => {
   const canBegin = needingCharacters.value.length === players.value.length;
-  const { qrMountPoint } = useQrCode();
+  const urlInfo = useUrlInfo();
+  const { qrMountPoint } = useQrCode(urlInfo);
 
   useSetupRoom();
 
   return (
     <div className={styles["w-wait_room"]}>
       <PlayerList playerList={players.value} />
-      <div className={styles["room_number"]}>房间号：{"roomNumber"}</div>
+      <div className={styles["room_number"]}>房间号：{urlInfo.roomNumber}</div>
 
       <div ref={qrMountPoint} className={styles["qr_code"]}></div>
 
