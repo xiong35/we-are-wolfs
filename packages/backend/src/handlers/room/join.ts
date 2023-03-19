@@ -1,6 +1,14 @@
-import { IHttpResp, IJoinRoomReq, IJoinRoomResp } from "@werewolf/shared";
+import {
+  IHttpResp,
+  IJoinRoomReq,
+  IJoinRoomResp,
+  IRoomJoinMsg,
+  WSEvents,
+} from "@werewolf/shared";
 import { IMiddleware } from "koa-router";
+import io from "../..";
 import { Room } from "../../models/RoomModel";
+import { emit } from "../../ws/tsHelper";
 
 export const joinRoom: IMiddleware = async (ctx) => {
   const req = ctx.request.body as IJoinRoomReq;
@@ -19,10 +27,9 @@ export const joinRoom: IMiddleware = async (ctx) => {
     },
   };
 
-  // TODO socket
-  // const roomJoinMsg: RoomJoinMsg = room.choosePublicInfo();
-
-  // io.to(roomNumber).emit(Events.ROOM_JOIN, roomJoinMsg);
+  emit(roomNumber, WSEvents.ROOM_JOIN, {
+    players: room.choosePublicInfo(),
+  });
 
   ctx.body = ret;
 };

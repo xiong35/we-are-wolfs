@@ -2,6 +2,7 @@ import { SERVER_DOMAIN, WSEvents, WS_PATH } from "@werewolf/shared";
 import io from "socket.io-client";
 import { showDialog } from "../../signals/dialog";
 import { getToken } from "../../utils/token";
+import { roomJoin } from "./handlers/roomJoin";
 import { on } from "./tsHelper";
 
 export let socket: SocketIOClient.Socket;
@@ -29,7 +30,7 @@ export function setupSocket() {
   });
   // on(socket, WSEvents.GAME_BEGIN, gameBegin);
   // on(socket, WSEvents.GAME_END, gameEnd);
-  // on(socket, WSEvents.ROOM_JOIN, roomJoin);
+  on(socket, WSEvents.ROOM_JOIN, roomJoin);
   // on(socket, WSEvents.SHOW_MSG, showWSMsg);
 
   socket.emit(WSEvents.FE_JOIN_ROOM, roomNumber);

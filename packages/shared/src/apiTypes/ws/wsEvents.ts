@@ -18,8 +18,10 @@ export type MapWSEvent2Payload = {
   [WSEvents.SHOW_MSG]: IShowMsgMsg;
   /** 结束游戏 */
   [WSEvents.GAME_END]: IGameEndMsg;
-  [WSEvents.FE_JOIN_ROOM]: string;
   [WSEvents.PING]: "PING";
+
+  //// 前端向后端发送的 socket 信息 ////
+  [WSEvents.FE_JOIN_ROOM]: string;
 };
 
 export enum WSEvents {
