@@ -55,7 +55,9 @@ export class Room implements IRoom {
 
     let tryTime = 20;
     while (tryTime--) {
-      const roomNumber = Math.random().toString().slice(2, 8);
+      // FIXME
+      // const roomNumber = Math.random().toString().slice(2, 8);
+      const roomNumber = "666666";
       const prevRoom = Room.roomMap[roomNumber];
       if (
         prevRoom &&
