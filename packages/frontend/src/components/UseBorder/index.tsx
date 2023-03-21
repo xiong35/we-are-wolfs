@@ -1,6 +1,7 @@
 import "./index.less";
 import { FC } from "react";
 import classNames from "classnames";
+import { dialogTimeLeft } from "../../signals/dialog";
 
 export type IUseBorderProps = {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ export const UseBorder: FC<IUseBorderProps> = ({
   className,
   ...res
 }) => {
+  dialogTimeLeft.peek();
   return (
     <span className={classNames("w-use_border", className)} {...res}>
       {children}
