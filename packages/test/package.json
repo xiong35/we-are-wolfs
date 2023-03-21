@@ -17,6 +17,7 @@
     "pm2": "^3.5.2",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "@werewolf/shared": "workspace:*"
   }
 }
