@@ -29,7 +29,11 @@ const WaitRoom: FC<IWaitRoomProps> = (props) => {
 
       <div className={styles["actions"]}>
         {self.value.index === 1 && (
-          <Btn onClick={() => "gameBegin"} disabled={!canBegin}>
+          <Btn
+            className="w-start"
+            onClick={() => "gameBegin"}
+            disabled={!canBegin}
+          >
             开始游戏
           </Btn>
         )}

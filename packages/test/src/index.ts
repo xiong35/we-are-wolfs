@@ -5,9 +5,7 @@ import { startMasterPlayer } from "./utils/startMasterPlayer";
 import { startNormalPlayer } from "./utils/startNormalPlayer";
 
 async function main(config: Config) {
-  const { pages, browsers } = await getPages({
-    needingCharacters: { GUARD: 1, HUNTER: 1, SEER: 1 },
-  } as any);
+  const { pages, browsers } = await getPages(config6);
 
   const [firstPage, ...restPages] = pages;
 
@@ -16,6 +14,9 @@ async function main(config: Config) {
   for (const p of restPages) {
     await startNormalPlayer(p, config);
   }
+
+  await firstPage.waitForSelector(".w-start");
+  await firstPage.click(".w-start");
 }
 
 main(config6);

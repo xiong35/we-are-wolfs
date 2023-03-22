@@ -58,7 +58,7 @@ export class Room implements IRoom {
       // FIXME
       // const roomNumber = Math.random().toString().slice(2, 8);
       const roomNumber = "666666";
-      const prevRoom = Room.roomMap[roomNumber];
+      const prevRoom: { createdAt: { getTime: () => number } } = null; // Room.roomMap[roomNumber];
       if (
         prevRoom &&
         Date.now() - prevRoom.createdAt.getTime() < 1000 * 3600 * 24
