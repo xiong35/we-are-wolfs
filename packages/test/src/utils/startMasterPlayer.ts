@@ -29,7 +29,7 @@ export async function startMasterPlayer(page: Page, config: Config) {
   // });
   await setPlayerNum(page, config);
   await page.type("[class^='_name'] input", "Player 1");
-  await fillPassword(page, "password");
+  await fillPassword(page, config.password);
 
   await page.click(".w-create");
 }

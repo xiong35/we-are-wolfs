@@ -9,4 +9,5 @@ export const config6: Config = {
     WEREWOLF: 1,
     WITCH: 1,
   },
+  roomNumber: "666666",
 };

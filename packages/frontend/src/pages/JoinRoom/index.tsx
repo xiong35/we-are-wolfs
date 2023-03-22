@@ -27,7 +27,7 @@ const JoinRoom: FC<IJoinRoomProps> = (props) => {
           />
         </UseBorder>
       </div>
-      <div className={styles["pw"]}>
+      <div className={styles["password"]}>
         <span className={styles["hint"]}>密码：</span>
         <UseBorder>
           <input
@@ -54,7 +54,9 @@ const JoinRoom: FC<IJoinRoomProps> = (props) => {
 
       <div className={styles["spacer"]}></div>
 
-      <Btn onClick={() => joinRoom(form)}>确认加入</Btn>
+      <Btn className="w-confirm" onClick={() => joinRoom(form)}>
+        确认加入
+      </Btn>
     </div>
   );
 };

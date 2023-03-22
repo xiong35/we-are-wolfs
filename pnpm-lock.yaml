@@ -111,6 +111,7 @@ importers:
 
   packages/test:
     specifiers:
+      '@faker-js/faker': ^7.6.0
       '@werewolf/shared': workspace:*
       nodemon: ^1.19.4
       pm2: ^3.5.2
@@ -119,6 +120,7 @@ importers:
       tsconfig-paths: ^4.1.0
       typescript: ^4.9.5
     dependencies:
+      '@faker-js/faker': 7.6.0
       '@werewolf/shared': link:../shared
       nodemon: 1.19.4
       pm2: 3.5.2
@@ -404,6 +406,11 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    dev: false
 
   /@jridgewell/gen-mapping/0.1.1:
     resolution: {integrity: sha512-sQXCasFk+U8lWYEe66WxRDOE9PjVz4vSM51fTu3Hw+ClTpUSQb718772vH3pyS5pShp6lvQM7SxgIDXXXmOX7w==}

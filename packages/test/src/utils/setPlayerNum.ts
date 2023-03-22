@@ -25,9 +25,8 @@ export async function setPlayerNum(page: Page, config: Config) {
       await down.click();
     }
 
-
-    let i = 10;
-    while (--i) {
+    let j = 10;
+    while (--j) {
       const numSelector = await t.waitForSelector("[class^='_number']");
       const num = await numSelector?.evaluate((el) => el.textContent);
 
@@ -38,8 +37,8 @@ export async function setPlayerNum(page: Page, config: Config) {
       }
     }
 
-    if (i <= 5) {
-      throw new Error(`# setPlayerNum - ${key} - ${i} - ${targetNum}`);
+    if (j <= 5) {
+      throw new Error(`# setPlayerNum - ${key} - ${j} - ${targetNum}`);
     }
   }
 }
