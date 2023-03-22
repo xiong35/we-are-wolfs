@@ -1,5 +1,7 @@
 {
-  "watch": ["src"],
+  "watch": [
+      "src"
+  ],
   "ext": "ts",
-  "exec": "node --loader ts-node/esm src/index.js"
+  "exec": "ts-node -r tsconfig-paths/register src/index.ts"
 }
