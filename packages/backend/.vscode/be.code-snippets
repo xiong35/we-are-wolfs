@@ -20,4 +20,14 @@
 		],
 		"description": "create a http handler"
 	},
+	"util": {
+		"scope": "typescript,typescriptreact,javascript,javascriptreact",
+		"prefix": "u#",
+		"body": [
+			"export function ${TM_FILENAME/(.*)\\..+$/$1/}() {",
+			"  $1",
+			"};",
+		],
+		"description": "create a http handler"
+	},
 }

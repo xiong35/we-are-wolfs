@@ -56,7 +56,10 @@ const CreateRoom: FC<ICreateRoomProps> = (props) => {
           />
         </UseBorder>
       </div>
-      <Btn onClick={() => createRoom(nickName, password, characters)}>
+      <Btn
+        className="w-create"
+        onClick={() => createRoom(nickName, password, characters)}
+      >
         确认创建
       </Btn>
     </div>

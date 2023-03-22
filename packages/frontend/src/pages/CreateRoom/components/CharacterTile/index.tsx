@@ -16,7 +16,13 @@ export const CharacterTile: FC<ICharacterTileProps> = ({
   character,
 }) => {
   return (
-    <div className={classNames(styles["w-character_tile"], "w-character_tile")}>
+    <div
+      className={classNames(
+        styles["w-character_tile"],
+        "w-character_tile",
+        character
+      )}
+    >
       <Avatar character={character}></Avatar>
       <div className={styles["controll"]}>
         <div onClick={() => setNum(-1)} className={styles["down"]}></div>

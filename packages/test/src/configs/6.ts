@@ -1,4 +1,4 @@
-import { Config } from ".";
+import { Config } from "./index";
 
 export const config6: Config = {
   needingCharacters: {
