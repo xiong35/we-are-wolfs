@@ -9,6 +9,7 @@ import {
 import { IMiddleware } from "koa-router";
 
 import io from "../../";
+import { isDev } from "../../constants/env";
 import { Room } from "../../models/RoomModel";
 import { WError } from "../../utils/error";
 import { GameController } from "./charActHandlers";
@@ -34,7 +35,13 @@ export const gameBegin: IMiddleware = async (ctx) => {
   const needingCharacters = [...room.needingCharacters];
 
   for (const p of room.players) {
-    const index = Math.floor(Math.random() * needingCharacters.length);
+    let index: number;
+    if (isDev) {
+      index = 0;
+    } else {
+      index = Math.floor(Math.random() * needingCharacters.length);
+    }
+
     const character = needingCharacters.splice(index, 1)[0];
 
     p.character = character;
@@ -81,9 +88,8 @@ export const gameBegin: IMiddleware = async (ctx) => {
 
   room.gameController.tryBeginState("WOLF_KILL");
 
-
   ctx.body = {
-    data: {},
+    data: "ok",
     msg: "ok",
     status: 200,
   } as IHttpResp<IGameBeginResp>;

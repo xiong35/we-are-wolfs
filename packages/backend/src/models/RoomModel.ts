@@ -9,6 +9,7 @@ import {
   IRoom,
   None,
 } from "@werewolf/shared";
+import { isDev } from "../constants/env";
 import { GameController } from "../handlers/game/charActHandlers";
 import { WError } from "../utils/error";
 import { Player } from "./PlayerModel";
@@ -54,25 +55,28 @@ export class Room implements IRoom {
       throw new WError(500, "未提供 player");
     }
 
-    let tryTime = 20;
-    while (tryTime--) {
-      // FIXME
-      // const roomNumber = Math.random().toString().slice(2, 8);
-      const roomNumber = "666666";
-      const prevRoom: { createdAt: { getTime: () => number } } = null; // Room.roomMap[roomNumber];
-      if (
-        prevRoom &&
-        Date.now() - prevRoom.createdAt.getTime() < 1000 * 3600 * 24
-      ) {
-        continue;
-      } else {
-        this.roomNumber = roomNumber;
-        Room.roomMap[this.roomNumber] = this;
-        break;
+    if (isDev) {
+      this.roomNumber = "666666";
+      Room.roomMap[this.roomNumber] = this;
+    } else {
+      let tryTime = 20;
+      while (tryTime--) {
+        const roomNumber = Math.random().toString().slice(2, 8);
+        const prevRoom = Room.roomMap[roomNumber];
+        if (
+          prevRoom &&
+          Date.now() - prevRoom.createdAt.getTime() < 1000 * 3600 * 24
+        ) {
+          continue;
+        } else {
+          this.roomNumber = roomNumber;
+          Room.roomMap[this.roomNumber] = this;
+          break;
+        }
       }
-    }
-    if (tryTime <= 0) {
-      throw new WError(500, "创建错误, 请重试!");
+      if (tryTime <= 0) {
+        throw new WError(500, "创建错误, 请重试!");
+      }
     }
 
     this.creatorID = creator.id;
