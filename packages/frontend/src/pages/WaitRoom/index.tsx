@@ -10,6 +10,7 @@ import { useQrCode } from "./hooks/useQrCode";
 import { socket } from "../../api/ws/setup";
 import { WSEvents } from "@werewolf/shared";
 import { useSetupRoom } from "./hooks/useSetupRoom";
+import { gameBeginReq } from "../../api/http/room";
 
 export type IWaitRoomProps = {};
 
@@ -31,7 +32,7 @@ const WaitRoom: FC<IWaitRoomProps> = (props) => {
         {self.value.index === 1 && (
           <Btn
             className="w-start"
-            onClick={() => "gameBegin"}
+            onClick={gameBeginReq} // FIXME game begin
             disabled={!canBegin}
           >
             开始游戏

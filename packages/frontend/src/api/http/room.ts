@@ -42,7 +42,7 @@ export async function getRoomMetaReq(data?: IGetRoomMetaReq) {
   return res;
 }
 
-export async function gameBeginReq(data?: IGameBeginReq) {
+export async function gameBeginReq() {
   const res = await request<IGameBeginResp>({
     url: "/game/begin",
     method: "POST",

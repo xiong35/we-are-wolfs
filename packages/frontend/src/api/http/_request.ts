@@ -48,7 +48,6 @@ export async function request<T = {}>(config: Partial<AxiosRequestConfig>) {
 
   if (errorMsg !== null) {
     console.error(res);
-    showDialog(errorMsg);
     return null;
   } else {
     return res.data.data;
