@@ -9,6 +9,7 @@ import {
   IRoom,
   None,
 } from "@werewolf/shared";
+import { GameController } from "../handlers/game/charActHandlers";
 import { WError } from "../utils/error";
 import { Player } from "./PlayerModel";
 
@@ -22,9 +23,9 @@ export class Room implements IRoom {
   isFinished = false;
   gameStatus: EGameStatus[] = ["WOLF_KILL"];
   toFinishPlayers: Set<number> = new Set<Index>();
-  timer: NodeJS.Timeout;
   players: Player[] = [];
   private playersMap: Record<ID, Player> = {};
+  gameController: GameController;
 
   get curStatus(): EGameStatus {
     return this.gameStatus[this.gameStatus.length - 1];

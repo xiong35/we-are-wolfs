@@ -11,6 +11,7 @@ import { IMiddleware } from "koa-router";
 import io from "../../";
 import { Room } from "../../models/RoomModel";
 import { WError } from "../../utils/error";
+import { GameController } from "./charActHandlers";
 
 /**
  * handle game begin
@@ -76,9 +77,10 @@ export const gameBegin: IMiddleware = async (ctx) => {
 
   io.to(roomNumber).emit(WSEvents.GAME_BEGIN);
 
-  // console.log("# roomJoin", "start");
-  // FIXME
-  // status2Handler["W"].startOfState(room, false);
+  room.gameController = new GameController(room);
+
+  room.gameController.tryBeginState("WOLF_KILL");
+
 
   ctx.body = {
     data: {},

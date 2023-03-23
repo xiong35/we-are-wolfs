@@ -40,8 +40,6 @@ export type IRoom = IRoomMeta & {
   gameStatus: EGameStatus[];
   /** 待结束当前阶段的玩家(每次改变状态需重置) */
   toFinishPlayers: Set<Index>;
-  /** 事件定时器 id, undefined 则为结束 */
-  timer: NodeJS.Timeout | undefined;
   /** 参与者 */
   players: IPlayer[];
 };
