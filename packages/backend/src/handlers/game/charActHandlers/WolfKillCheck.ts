@@ -1,22 +1,17 @@
+import { Index } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
-import { GameActHandler, Response, startCurrentState, status2Handler } from "./";
-import { SeerCheckHandler } from "./SeerCheck";
+import { GameActHandler } from "./";
 
 export const WolfKillCheckHandler: GameActHandler = {
-  curStatus: GameStatus.WOLF_KILL_CHECK,
+  curStatus: "WOLF_KILL_CHECK",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
+    target: Index,
     ctx: Context
   ) {
     return {
@@ -27,10 +22,14 @@ export const WolfKillCheckHandler: GameActHandler = {
   },
 
   startOfState(room: Room) {
-    startCurrentState(this, room);
+    return {
+      action: "START",
+    };
   },
 
-  async endOfState(room: Room) {
-    SeerCheckHandler.startOfState(room);
+  endOfState(room: Room) {
+    return {
+      nextState: "SEER_CHECK",
+    };
   },
 };
