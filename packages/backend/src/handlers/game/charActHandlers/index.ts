@@ -13,24 +13,24 @@ import io from "../../..";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
 
-// import { BeforeDayDiscussHandler } from "./BeforeDayDiscuss";
-// import { DayDiscussHandler } from "./DayDiscuss";
-// import { ExileVoteHandler } from "./ExileVote";
-// import { ExileVoteCheckHandler } from "./ExileVoteCheck";
-// import { GuardProtectHandler } from "./GuardProtect";
-// import { HunterCheckHandler } from "./HunterCheck";
-// import { HunterShootHandler } from "./HunterShoot";
-// import { LeaveMsgHandler } from "./LeaveMsg";
-// import { SeerCheckHandler } from "./SeerCheck";
-// import { SheriffAssignHandler } from "./SheriffAssign";
-// import { SheriffAssignCheckHandler } from "./SheriffAssignCheck";
-// import { SheriffElectHandler } from "./SheriffElect";
-// import { SheriffSpeachHandler } from "./SheriffSpeach";
-// import { SheriffVoteHandler } from "./SheriffVote";
-// import { SheriffVoteCheckHandler } from "./SheriffVoteCheck";
-// import { WitchActHandler } from "./WitchAct";
-// import { WolfKillHandler } from "./WolfKill";
-// import { WolfKillCheckHandler } from "./WolfKillCheck";
+import { BeforeDayDiscussHandler } from "./BeforeDayDiscuss";
+import { DayDiscussHandler } from "./DayDiscuss";
+import { ExileVoteHandler } from "./ExileVote";
+import { ExileVoteCheckHandler } from "./ExileVoteCheck";
+import { GuardProtectHandler } from "./GuardProtect";
+import { HunterCheckHandler } from "./HunterCheck";
+import { HunterShootHandler } from "./HunterShoot";
+import { LeaveMsgHandler } from "./LeaveMsg";
+import { SeerCheckHandler } from "./SeerCheck";
+import { SheriffAssignHandler } from "./SheriffAssign";
+import { SheriffAssignCheckHandler } from "./SheriffAssignCheck";
+import { SheriffElectHandler } from "./SheriffElect";
+import { SheriffSpeachHandler } from "./SheriffSpeach";
+import { SheriffVoteHandler } from "./SheriffVote";
+import { SheriffVoteCheckHandler } from "./SheriffVoteCheck";
+import { WitchActHandler } from "./WitchAct";
+import { WolfKillHandler } from "./WolfKill";
+import { WolfKillCheckHandler } from "./WolfKillCheck";
 
 export type StateStartResp = {
   /**
