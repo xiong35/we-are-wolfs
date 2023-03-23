@@ -1,45 +1,42 @@
+import { IHttpResp, Index, ISeerActResp, ISeerStatus } from "@werewolf/shared";
 import { Context } from "koa";
 
 import io from "../../..";
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { HttpRes } from "../../../../../werewolf-frontend/shared/httpMsg/_httpResTemplate";
-import { SeerCheckData } from "../../../../../werewolf-frontend/shared/httpMsg/SeerCheckMsg";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
-import { createError } from "../../../middleware/handleError";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
+import { WError } from "../../../utils/error";
 import { getVoteResult } from "../../../utils/getVoteResult";
-import { GameActHandler, Response, startCurrentState, status2Handler } from "./";
+import { GameActHandler } from "./";
 import { WitchActHandler } from "./WitchAct";
 
 export const SeerCheckHandler: GameActHandler = {
-  curStatus: GameStatus.SEER_CHECK,
+  curStatus: "SEER_CHECK",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
+    target: Index,
     ctx: Context
   ) {
     const targetPlayer = room.getPlayerByIndex(target);
 
-    if (!targetPlayer)
-      createError({ status: 400, msg: "未找到此玩家" });
-    if (player.characterStatus?.checks?.[room.currentDay])
-      createError({ status: 400, msg: "一天只能查验一次" });
+    if (!targetPlayer) throw new WError(400, "未找到此玩家");
+
+    const status = player.characterStatus as ISeerStatus;
+
+    if (status.checks?.[room.currentDay]) {
+      throw new WError(400, "一天只能查验一次");
+    }
 
     const isWolf = targetPlayer.character === "WEREWOLF";
 
-    player.characterStatus.checks =
-      player.characterStatus.checks || [];
-    player.characterStatus.checks[room.currentDay] = {
+    status.checks = status.checks || [];
+    status.checks[room.currentDay] = {
       index: target,
       isWerewolf: isWolf,
     };
 
-    const ret: HttpRes<SeerCheckData> = {
+    const ret: IHttpResp<ISeerActResp> = {
       data: {
         isWolf,
       },
@@ -51,13 +48,20 @@ export const SeerCheckHandler: GameActHandler = {
 
   startOfState(room: Room) {
     // 如果没有预言家就直接结束此阶段
-    if (!room.needingCharacters.includes("SEER"))
-      return SeerCheckHandler.endOfState(room);
-
-    startCurrentState(this, room);
+    if (!room.needingCharacters.includes("SEER")) {
+      return {
+        action: "END",
+      };
+    } else {
+      return {
+        action: "START",
+      };
+    }
   },
 
-  async endOfState(room: Room) {
-    WitchActHandler.startOfState(room);
+  endOfState(room: Room) {
+    return {
+      nextState: "WITCH_ACT",
+    };
   },
 };
