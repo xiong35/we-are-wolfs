@@ -1,6 +1,8 @@
 import {
   ICreateRoomReq,
   ICreateRoomResp,
+  IGameBeginReq,
+  IGameBeginResp,
   IGetRoomMetaReq,
   IGetRoomMetaResp,
   IJoinRoomReq,
@@ -38,4 +40,13 @@ export async function getRoomMetaReq(data?: IGetRoomMetaReq) {
   });
 
   return res;
+}
+
+export async function gameBeginReq(data?: IGameBeginReq) {
+  const res = await request<IGameBeginResp>({
+    url: "/game/begin",
+    method: "POST",
+  });
+
+  return !!res;
 }

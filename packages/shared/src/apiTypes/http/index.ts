@@ -7,7 +7,8 @@ export interface IHttpResp<T = {}> {
 }
 
 export * from "./characterAct";
-export * from "./gameStatus"
+export * from "./gameStatus";
 export * from "./roomCreate";
 export * from "./roomJoin";
 export * from "./roomGetMeta";
+export * from "./gameBegin";

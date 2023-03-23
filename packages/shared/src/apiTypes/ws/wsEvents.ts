@@ -1,3 +1,4 @@
+import { CheckIsSame } from "../../utils/CheckIsSame";
 import { IChangeStatusMsg } from "./changeStatus";
 import { IGameEndMsg } from "./gameEnd";
 import { IRoomJoinMsg } from "./roomJoin";
@@ -34,12 +35,6 @@ export enum WSEvents {
   PING = "PING",
 }
 
-/** 检查两个 union 是否 完全一致 */
-type CheckIsSame<T, U> = Exclude<T, U> extends never
-  ? Exclude<U, T> extends never
-    ? true
-    : false
-  : false;
 type IsMapWSEvent2PayloadSynced = CheckIsSame<
   WSEvents,
   keyof MapWSEvent2Payload // 未设置 payload 类型的 key
