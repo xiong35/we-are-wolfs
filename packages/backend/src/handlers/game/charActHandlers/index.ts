@@ -39,8 +39,7 @@ export type StateStartResp = {
    * - SKIP: 整个跳过当前状态（尝试 start gotoNextState）
    * - END: 直接进入 endOfState 的调用
    */
-  action: "START" | "SKIP" | "END";
-  gotoNextState?: EGameStatus;
+  action: "START" | "END";
   argsToEndOfState?: any[];
 };
 
@@ -66,7 +65,7 @@ export interface GameActHandler {
     player: Player,
     target: Index,
     ctx: Context
-  ) => Promise<IHttpResp>;
+  ) => IHttpResp;
   /**
    * 检查是否需要唤起 state
    * 链式调用\
@@ -129,7 +128,7 @@ export class GameController {
   /** 唤起给定节点的 startOfState */
   tryBeginState(statusToBegin: EGameStatus, ...argsToStartOfState: any[]) {
     const handler = status2Handler[statusToBegin];
-    const { action, argsToEndOfState, gotoNextState } = handler.startOfState(
+    const { action, argsToEndOfState } = handler.startOfState(
       this.room,
       ...argsToStartOfState
     );
@@ -138,16 +137,12 @@ export class GameController {
       statusToBegin,
       argsToStartOfState,
       action,
-      gotoNextState,
       argsToEndOfState,
     });
 
     switch (action) {
       case "START":
         this.doBeginState(statusToBegin, ...argsToEndOfState);
-        break;
-      case "SKIP":
-        this.tryBeginState(gotoNextState);
         break;
       case "END":
         this.tryEndState(statusToBegin, ...argsToEndOfState);
@@ -230,7 +225,7 @@ export class GameController {
 //     // 单独处理, 从夜晚进入死亡结算再进入白天时
 //     // 将未结束发言的人设为所有活着的人
 //     // 同时设置能被投票的人为活着的
-//     if (room.nextStateOfDieCheck === GameStatus.DAY_DISCUSS) {
+//     if (room.nextStateOfDieCheck === "DAY_DISCUSS") {
 //       room.toFinishPlayers = new Set(
 //         room.players.filter((p) => p.isAlive).map((p) => p.index)
 //       );
