@@ -25,7 +25,7 @@ import { SeerCheckHandler } from "./SeerCheck";
 import { SheriffAssignHandler } from "./SheriffAssign";
 import { SheriffAssignCheckHandler } from "./SheriffAssignCheck";
 import { SheriffElectHandler } from "./SheriffElect";
-import { SheriffSpeachHandler } from "./SheriffSpeach";
+import { SheriffSpeechHandler } from "./SheriffSpeech";
 import { SheriffVoteHandler } from "./SheriffVote";
 import { SheriffVoteCheckHandler } from "./SheriffVoteCheck";
 import { WitchActHandler } from "./WitchAct";
@@ -108,7 +108,7 @@ export const status2Handler: Record<EGameStatus, GameActHandler> = {
   SEER_CHECK: SeerCheckHandler,
   SHERIFF_ASSIGN: SheriffAssignHandler,
   SHERIFF_ELECT: SheriffElectHandler,
-  SHERIFF_SPEECH: SheriffSpeachHandler,
+  SHERIFF_SPEECH: SheriffSpeechHandler,
   SHERIFF_VOTE: SheriffVoteHandler,
   WITCH_ACT: WitchActHandler,
   WOLF_KILL: WolfKillHandler,
@@ -173,7 +173,7 @@ export class GameController {
     clearTimeout(this.timer);
 
     this.timer = setTimeout(() => {
-      handler.endOfState(room, ...argsToEndOfState);
+      this.tryEndState(statusToBegin, ...argsToEndOfState);
     }, timeout * 1000);
     // 通知玩家当前状态已经发生改变, 并通知设置天数
     io.to(room.roomNumber).emit(WSEvents.CHANGE_STATUS, {
