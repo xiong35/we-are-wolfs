@@ -1,27 +1,17 @@
+import { Index } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
-import { createError } from "../../../middleware/handleError";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
-import { getVoteResult } from "../../../utils/getVoteResult";
-import { GameActHandler, Response, startCurrentState } from "./";
-import { BeforeDayDiscussHandler } from "./BeforeDayDiscuss";
-import { HunterShootHandler } from "./HunterShoot";
-import { SheriffAssignHandler } from "./SheriffAssign";
-import { SheriffElectHandler } from "./SheriffElect";
+import { GameActHandler } from "./";
 
 export const HunterCheckHandler: GameActHandler = {
-  curStatus: GameStatus.HUNTER_CHECK,
+  curStatus: "HUNTER_CHECK",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
+    target: Index,
     ctx: Context
   ) {
     return {
@@ -32,10 +22,14 @@ export const HunterCheckHandler: GameActHandler = {
   },
 
   startOfState(room: Room) {
-    startCurrentState(this, room);
+    return {
+      action: "START",
+    };
   },
 
-  async endOfState(room: Room) {
-    SheriffAssignHandler.startOfState(room);
+  endOfState(room: Room) {
+    return {
+      nextState: "SHERIFF_ASSIGN",
+    };
   },
 };
