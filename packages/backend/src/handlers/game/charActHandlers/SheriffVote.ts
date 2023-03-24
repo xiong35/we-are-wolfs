@@ -1,12 +1,12 @@
 import { Index, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
 import { WError } from "../../../utils/error";
 import { getVoteResult, Vote } from "../../../utils/getVoteResult";
 import { renderHintNPlayers } from "../../../utils/renderHintNPlayers";
+import { emit } from "../../../ws/tsHelper";
 import { GameActHandler } from "./";
 
 export const SheriffVoteHandler: GameActHandler = {
@@ -56,7 +56,8 @@ export const SheriffVoteHandler: GameActHandler = {
     if (!highestVotes || highestVotes.length === 0) {
       // 如果所有人都弃票
       // 直接进入白天
-      io.to(room.roomNumber).emit(WSEvents.SHOW_MSG, {
+
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: "所有人都弃票, 即将进入自由发言阶段",
       });
 
@@ -67,9 +68,11 @@ export const SheriffVoteHandler: GameActHandler = {
       // 如果有票数最高的人
       // 此人当选, 进入白天
       room.getPlayerByIndex(highestVotes[0]).isSheriff = true;
-      io.to(room.roomNumber).emit(WSEvents.SHOW_MSG, {
+
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: renderHintNPlayers("当选警长的玩家为:", highestVotes),
       });
+
       return {
         nextState: "SHERIFF_VOTE_CHECK",
       };
@@ -84,12 +87,13 @@ export const SheriffVoteHandler: GameActHandler = {
       });
 
       // 告知所有人现在应该再依次投票
-      io.to(room.roomNumber).emit(WSEvents.SHOW_MSG, {
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: renderHintNPlayers(
           "竞争警长的玩家如下, 请再次依次进行发言",
           highestVotes
         ),
       });
+
       // 设置下一阶段为警长发言
       return {
         nextState: "SHERIFF_SPEECH",

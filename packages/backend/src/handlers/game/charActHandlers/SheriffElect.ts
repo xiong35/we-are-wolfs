@@ -1,10 +1,10 @@
 import { Index, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
 import { renderHintNPlayers } from "../../../utils/renderHintNPlayers";
+import { emit } from "../../../ws/tsHelper";
 import { GameActHandler } from "./";
 
 export const SheriffElectHandler: GameActHandler = {
@@ -46,7 +46,7 @@ export const SheriffElectHandler: GameActHandler = {
     } else if (electingPlayers.length === 1) {
       // 只有一人竞选就把警长给他
       electingPlayers[0].isSheriff = true;
-      io.to(room.roomNumber).emit(WSEvents.SHOW_MSG, {
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: renderHintNPlayers("仅有此玩家参选, 直接成为警长", [
           electingPlayers[0].index,
         ]),
@@ -59,7 +59,7 @@ export const SheriffElectHandler: GameActHandler = {
       // 有多人参选
       // 设置参选警长的人都未结束发言
       room.toFinishPlayers = new Set(electingPlayers.map((p) => p.index));
-      io.to(room.roomNumber).emit(WSEvents.SHOW_MSG, {
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: renderHintNPlayers(
           "参选警长的玩家如下, 请依次进行发言",
           electingPlayers.map((p) => p.index)

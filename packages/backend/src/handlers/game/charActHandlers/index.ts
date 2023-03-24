@@ -1,17 +1,15 @@
 import {
   EGameStatus,
-  IChangeStatusMsg,
   IHttpResp,
   Index,
   TIMEOUT,
   WSEvents,
 } from "@werewolf/shared";
 import { Context } from "koa";
-import { type } from "os";
 
-import io from "../../..";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
+import { emit } from "../../../ws/tsHelper";
 
 import { BeforeDayDiscussHandler } from "./BeforeDayDiscuss";
 import { DayDiscussHandler } from "./DayDiscuss";
@@ -176,11 +174,11 @@ export class GameController {
       this.tryEndState(statusToBegin, ...argsToEndOfState);
     }, timeout * 1000);
     // 通知玩家当前状态已经发生改变, 并通知设置天数
-    io.to(room.roomNumber).emit(WSEvents.CHANGE_STATUS, {
+    emit(room.roomNumber, WSEvents.CHANGE_STATUS, {
       day: room.currentDay,
       status: statusToBegin,
       timeout,
-    } as IChangeStatusMsg);
+    });
   }
 
   tryEndState(statusToEnd: EGameStatus, ...argsToEndOfState: any[]) {

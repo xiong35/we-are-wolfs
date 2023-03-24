@@ -1,17 +1,11 @@
-import {
-  Index,
-  IShowMsgMsg,
-  IWerewolfStatus,
-  None,
-  WSEvents,
-} from "@werewolf/shared";
+import { Index, IWerewolfStatus, None, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
 import { WError } from "../../../utils/error";
 import { getVoteResult } from "../../../utils/getVoteResult";
+import { emit } from "../../../ws/tsHelper";
 import { GameActHandler } from "./";
 
 export const WolfKillHandler: GameActHandler = {
@@ -37,9 +31,9 @@ export const WolfKillHandler: GameActHandler = {
 
   startOfState(room) {
     if (room.currentDay === None) {
-      io.to(room.roomNumber).emit(WSEvents.SHOW_MSG, {
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: "天黑请闭眼👁️",
-      } as IShowMsgMsg);
+      });
     }
 
     /** IMPORTANT 狼人杀人刚开始时 curDay ++，进入晚上*/
