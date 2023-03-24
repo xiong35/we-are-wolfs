@@ -13,7 +13,6 @@ import { Room } from "../../../models/RoomModel";
 import { WError } from "../../../utils/error";
 import { getVoteResult } from "../../../utils/getVoteResult";
 import { GameActHandler } from "./";
-import { WolfKillCheckHandler } from "./WolfKillCheck";
 
 export const WolfKillHandler: GameActHandler = {
   curStatus: "WOLF_KILL",
@@ -43,7 +42,7 @@ export const WolfKillHandler: GameActHandler = {
       } as IShowMsgMsg);
     }
 
-    /** IMPORTANT 狼人杀人刚开始时 curDay ++ */
+    /** IMPORTANT 狼人杀人刚开始时 curDay ++，进入晚上*/
     room.currentDay++;
 
     type A = { foo: number } | { bar: string };
