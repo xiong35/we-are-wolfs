@@ -1,11 +1,14 @@
 import {
   EGameStatus,
+  IGameEndMsg,
   IHttpResp,
   Index,
   TIMEOUT,
   WSEvents,
 } from "@werewolf/shared";
 import { Context } from "koa";
+import io from "../../..";
+import { CLEAR_ROOM_TIME } from "../../../constants/time";
 
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
@@ -197,39 +200,87 @@ export class GameController {
 
     this.tryBeginState(nextState, ...argsToNextStartOfState);
   }
+
+  /**
+   * 当前死亡结算正式结束, 设置此人 isDying 为 false\
+   * 判断是否还有要进行死亡检查的人
+   * 1. 如果有就把他设置为 curDyingPlayer, 进行 LeaveMsg
+   * 2. 如果没有, 设置 curDyingPlayer 为 null, 进行 nextState, 并将他设为 null
+   */
+  gotoNextStateAfterHandleDie() {
+    const { room } = this;
+    if (this.checkGameOver()) return;
+
+    room.curDyingPlayer.isDying = false;
+    room.curDyingPlayer.isAlive = false;
+
+    const dyingPlayer = room.players.find((p) => p.isDying);
+
+    if (dyingPlayer) {
+      room.curDyingPlayer = dyingPlayer;
+      return this.tryBeginState("LEAVE_MSG");
+    } else {
+      room.curDyingPlayer = null;
+      // 单独处理, 从夜晚进入死亡结算再进入白天时
+      // 将未结束发言的人设为所有活着的人
+      // 同时设置能被投票的人为活着的
+      if (room.nextStateOfDieCheck === "DAY_DISCUSS") {
+        room.toFinishPlayers = new Set(
+          room.players.filter((p) => p.isAlive).map((p) => p.index)
+        );
+        room.players.forEach((p) => (p.canBeVoted = p.isAlive));
+      }
+      this.tryBeginState(room.nextStateOfDieCheck);
+      room.nextStateOfDieCheck = null;
+    }
+  }
+
+  private checkGameOver(): boolean {
+    // TODO 添加游戏结束的状态
+    const { room } = this;
+
+    const { werewolf, villager } = room.players.reduce(
+      (prev, p) => {
+        if (p.isAlive) {
+          if (p.character === "WEREWOLF") prev.werewolf++;
+          else prev.villager++;
+        }
+        return prev;
+      },
+      { werewolf: 0, villager: 0 }
+    );
+
+    let winner: IGameEndMsg["winner"] | undefined;
+    if (werewolf >= villager) winner = "WEREWOLF";
+    if (werewolf === 0) winner = "VILLAGER";
+
+    // console.log("# checkGameOver", { werewolf, villager }); // TODO
+    if (winner) {
+      // 通知游戏已结束
+      emit(room.roomNumber, WSEvents.GAME_END, {
+        winner,
+      });
+
+      /* 设置房间状态 */
+      room.isFinished = true;
+      clearTimeout(this.timer);
+      clearTimeout(room.clearSelfTimer);
+
+      /* 关闭 sockets */
+      // make all Socket instances leave the room
+      io.socketsLeave(room.roomNumber);
+      // make all Socket instances in the room disconnect (and close the low-level connection)
+      io.in(room.roomNumber).disconnectSockets(true);
+
+      /* 删除此房间 */
+      // TODO 定时器？？换成定时任务好一些吧
+      setTimeout(() => {
+        Room.clearRoom(room.roomNumber);
+      }, CLEAR_ROOM_TIME);
+
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
-
-/**
- * 当前死亡结算正式结束, 设置此人 isDying 为 false\
- * 判断是否还有要进行死亡检查的人
- * 1. 如果有就把他设置为 curDyingPlayer, 进行 LeaveMsg
- * 2. 如果没有, 设置 curDyingPlayer 为 null, 进行 nextState, 并将他设为 null
- */
-// export function gotoNextStateAfterHandleDie(room: Room) {
-//   if (checkGameOver(room)) return;
-
-//   room.curDyingPlayer.isDying = false;
-//   room.curDyingPlayer.isAlive = false;
-
-//   const dyingPlayer = room.players.find((p) => p.isDying);
-//   // console.log("# index", room.players);
-//   // console.log("# index", { dyingPlayer });
-
-//   if (dyingPlayer) {
-//     room.curDyingPlayer = dyingPlayer;
-//     return LeaveMsgHandler.startOfState(room);
-//   } else {
-//     room.curDyingPlayer = null;
-//     // 单独处理, 从夜晚进入死亡结算再进入白天时
-//     // 将未结束发言的人设为所有活着的人
-//     // 同时设置能被投票的人为活着的
-//     if (room.nextStateOfDieCheck === "DAY_DISCUSS") {
-//       room.toFinishPlayers = new Set(
-//         room.players.filter((p) => p.isAlive).map((p) => p.index)
-//       );
-//       room.players.forEach((p) => (p.canBeVoted = p.isAlive));
-//     }
-//     status2Handler[room.nextStateOfDieCheck].startOfState(room);
-//     room.nextStateOfDieCheck = null;
-//   }
-// }

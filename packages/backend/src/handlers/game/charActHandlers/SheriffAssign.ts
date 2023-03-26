@@ -1,34 +1,25 @@
+import { Index, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
-import { ShowMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ShowMsg";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
-import { getVoteResult } from "../../../utils/getVoteResult";
 import { renderHintNPlayers } from "../../../utils/renderHintNPlayers";
-import {
-    GameActHandler, gotoNextStateAfterHandleDie, Response, startCurrentState, status2Handler
-} from "./";
-import { LeaveMsgHandler } from "./LeaveMsg";
-import { SheriffAssignCheckHandler } from "./SheriffAssignCheck";
+import { emit } from "../../../ws/tsHelper";
+import { GameActHandler } from "./";
 
 export const SheriffAssignHandler: GameActHandler = {
-  curStatus: GameStatus.SHERIFF_ASSIGN,
+  curStatus: "SHERIFF_ASSIGN",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
+    target: Index,
     ctx: Context
   ) {
     const targetPlayer = room.getPlayerByIndex(target);
     targetPlayer.isSheriff = true;
     player.isSheriff = false;
-    player.sheriffVotes[room.currentDay] = target;
+    player.sheriffAssigns[room.currentDay] = target;
 
     return {
       status: 200,
@@ -46,34 +37,43 @@ export const SheriffAssignHandler: GameActHandler = {
       !room.curDyingPlayer.isSheriff
     ) {
       // 死者不是警长或无警长, 直接结束
-      return SheriffAssignHandler.endOfState(room, false);
+      return {
+        action: "END",
+        argsToEndOfState: [false],
+      };
     }
-    startCurrentState(this, room);
+
+    return {
+      action: "START",
+    };
   },
 
-  async endOfState(room, showSheriff: boolean = true) {
+  endOfState(room, showSheriff: boolean = true) {
     if (!showSheriff) {
       // 无警长就直接清算
-      return gotoNextStateAfterHandleDie(room);
+      return {
+        nextState: room.gameController.gotoNextStateAfterHandleDie(),
+      };
     } else {
       // TODO 通知发表遗言的时间
 
       // 去除现在死的玩家的警长身份
       room.curDyingPlayer.isSheriff = false;
+
       const nextSheriff = room.players.find((p) => p.isSheriff);
       if (!nextSheriff) {
-        io.to(room.roomNumber).emit(Events.SHOW_MSG, {
+        emit(room.roomNumber, WSEvents.SHOW_MSG, {
           innerHTML: "上任警长选择不传警徽, 现在没有警长了",
-        } as ShowMsg);
+        });
       } else {
-        io.to(room.roomNumber).emit(Events.SHOW_MSG, {
-          innerHTML: renderHintNPlayers("下一任警长为", [
-            nextSheriff.index,
-          ]),
-        } as ShowMsg);
+        emit(room.roomNumber, WSEvents.SHOW_MSG, {
+          innerHTML: renderHintNPlayers("下一任警长为", [nextSheriff.index]),
+        });
       }
 
-      SheriffAssignCheckHandler.startOfState(room);
+      return {
+        nextState: "SHERIFF_ASSIGN_CHECK",
+      };
     }
   },
 };

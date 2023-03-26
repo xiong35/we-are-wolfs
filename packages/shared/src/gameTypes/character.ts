@@ -21,7 +21,7 @@ export type IHunterStatus = {
   /** 记录开枪的信息 */
   shootAt: {
     day: Day;
-    player: Index;
+    playerIndex: Index;
   };
 };
 
