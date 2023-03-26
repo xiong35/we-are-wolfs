@@ -26,7 +26,7 @@ export const gameBegin: IMiddleware = async (ctx) => {
     throw new WError(HttpStatusCode.UNAUTHORIZED, "只有房主才能开始游戏");
   }
 
-  if (room.players.length !== room.needingCharacters.length) {
+  if (room.players.length !== room.needingCharacters.length + 1) {
     throw new WError(400, "房间人数未满, 无法开始游戏");
   }
 
