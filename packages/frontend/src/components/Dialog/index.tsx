@@ -11,7 +11,11 @@ export const Dialog: FC = () => {
   if (dialogTimeLeft.value <= 0) return null;
 
   return (
-    <UseMenu className={"w-dialog"} onCancel={hideDialog}>
+    <UseMenu
+      borderClassName="w-dialog-main"
+      className={"w-dialog"}
+      onCancel={hideDialog}
+    >
       <div className="w-dialog-content">
         <span
           className="w-dialog-content-text"
