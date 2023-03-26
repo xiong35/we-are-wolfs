@@ -15,8 +15,7 @@ export const ExileVoteHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     if (!room.getPlayerByIndex(target).canBeVoted) {
       throw new WError(400, "此玩家不参与投票");

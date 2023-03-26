@@ -64,8 +64,7 @@ export interface GameActHandler {
   handleHttpInTheState: (
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) => IHttpResp;
   /**
    * 检查是否需要唤起 state
@@ -284,5 +283,13 @@ export class GameController {
     } else {
       return false;
     }
+  }
+
+  handleHttp(player: Player, target: Index) {
+    return status2Handler[this.room.curStatus].handleHttpInTheState(
+      this.room,
+      player,
+      target
+    );
   }
 }

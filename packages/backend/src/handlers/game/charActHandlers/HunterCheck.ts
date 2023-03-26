@@ -11,8 +11,7 @@ export const HunterCheckHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     return {
       status: 200,

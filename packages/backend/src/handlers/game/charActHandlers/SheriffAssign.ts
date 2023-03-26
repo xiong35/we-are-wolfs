@@ -13,8 +13,7 @@ export const SheriffAssignHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     const targetPlayer = room.getPlayerByIndex(target);
     targetPlayer.isSheriff = true;

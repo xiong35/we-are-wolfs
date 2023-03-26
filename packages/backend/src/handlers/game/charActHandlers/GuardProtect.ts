@@ -12,8 +12,7 @@ export const GuardProtectHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     const status = player.characterStatus as IGuardStatus;
     status.protects = status.protects || [];

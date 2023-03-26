@@ -14,8 +14,7 @@ export const WolfKillHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     // 记录想杀谁
     const status = player.characterStatus as IWerewolfStatus;

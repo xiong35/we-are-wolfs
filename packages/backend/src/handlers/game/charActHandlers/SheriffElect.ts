@@ -13,8 +13,7 @@ export const SheriffElectHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     // 加入参与竞选的人
     player.canBeVoted = true;

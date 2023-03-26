@@ -12,8 +12,7 @@ export const BeforeDayDiscussHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     // TODO 真正设置 isAlive 字段
     return {

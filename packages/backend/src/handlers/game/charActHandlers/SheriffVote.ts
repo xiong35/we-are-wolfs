@@ -15,8 +15,7 @@ export const SheriffVoteHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     if (!room.getPlayerByIndex(target)?.canBeVoted) {
       throw new WError(400, "选择的玩家未参与竞选");

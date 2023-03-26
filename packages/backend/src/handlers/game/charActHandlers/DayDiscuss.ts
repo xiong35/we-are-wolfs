@@ -11,8 +11,7 @@ export const DayDiscussHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     room.toFinishPlayers.delete(player.index);
 

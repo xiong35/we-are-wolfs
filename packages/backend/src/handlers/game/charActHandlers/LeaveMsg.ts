@@ -12,8 +12,7 @@ export const LeaveMsgHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     // 结束发言
     room.gameController.tryEndState("LEAVE_MSG");

@@ -12,8 +12,7 @@ export const WitchActHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     const status = player.characterStatus as IWitchStatus;
     if (

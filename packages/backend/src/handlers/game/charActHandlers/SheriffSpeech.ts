@@ -11,8 +11,7 @@ export const SheriffSpeechHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     // 结束自己的发言
     room.toFinishPlayers.delete(player.index);

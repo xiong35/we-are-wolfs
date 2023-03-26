@@ -14,8 +14,7 @@ export const HunterShootHandler: GameActHandler = {
   handleHttpInTheState(
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
+    target: Index
   ) {
     // console.log("# HunterShoot", { player });
     if (player.die?.fromCharacter === "WITCH") {
