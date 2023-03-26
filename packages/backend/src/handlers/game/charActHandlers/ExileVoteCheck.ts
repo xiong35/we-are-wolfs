@@ -1,21 +1,17 @@
+import { EGameStatus, Index } from "@werewolf/shared";
 import { Context } from "koa";
 
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
-import { GameActHandler, Response, startCurrentState, status2Handler } from "./";
+import { GameActHandler } from "./";
 
 export const ExileVoteCheckHandler: GameActHandler = {
-  curStatus: GameStatus.EXILE_VOTE_CHECK,
+  curStatus: "EXILE_VOTE_CHECK",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
-    ctx: Context
+    target: Index
   ) {
     return {
       status: 200,
@@ -23,16 +19,23 @@ export const ExileVoteCheckHandler: GameActHandler = {
       data: { target },
     };
   },
+
   /**
    * @param nextState 在确认完结果后进入哪个状态
    */
-  startOfState: function (room: Room, nextState: GameStatus) {
-    startCurrentState(this, room, nextState);
+  startOfState: function (room: Room, nextState: EGameStatus) {
+    return {
+      action: "START",
+      argsToEndOfState: [nextState],
+    };
   },
+
   /**
    * @param nextState 在确认完结果后进入哪个状态
    */
-  async endOfState(room: Room, nextState: GameStatus) {
-    status2Handler[nextState].startOfState(room);
+  endOfState(room: Room, nextState: EGameStatus) {
+    return {
+      nextState,
+    };
   },
 };

@@ -3,16 +3,24 @@ import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
-import { GameActHandler } from "./";
+import { GameActHandler } from ".";
 
-export const WolfKillCheckHandler: GameActHandler = {
-  curStatus: "WOLF_KILL_CHECK",
+export const SheriffSpeechHandler: GameActHandler = {
+  curStatus: "SHERIFF_SPEECH",
 
   handleHttpInTheState(
     room: Room,
     player: Player,
     target: Index
   ) {
+    // 结束自己的发言
+    room.toFinishPlayers.delete(player.index);
+
+    // 如果所有人都发言完毕, 进入警长投票环节
+    if (room.toFinishPlayers.size === 0) {
+      room.gameController.tryBeginState("SHERIFF_VOTE");
+    }
+
     return {
       status: 200,
       msg: "ok",
@@ -28,7 +36,7 @@ export const WolfKillCheckHandler: GameActHandler = {
 
   endOfState(room: Room) {
     return {
-      nextState: "SEER_CHECK",
+      nextState: "SHERIFF_VOTE",
     };
   },
 };

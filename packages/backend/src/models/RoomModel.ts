@@ -1,4 +1,5 @@
 import {
+  Day,
   ECharacter,
   EGameStatus,
   ICreateRoomReq,
@@ -20,7 +21,7 @@ export class Room implements IRoom {
   password?: string;
   needingCharacters: ECharacter[];
   remainingIndexes: Index[];
-  currentDay: number = None; // 狼人杀人时会 ++
+  currentDay: Day = None; // 狼人杀人时会 ++, 一开始是 -1，游戏开始被加到 0
   isFinished = false;
   gameStatus: EGameStatus[] = ["WOLF_KILL"];
   toFinishPlayers: Set<number> = new Set<Index>();
@@ -34,7 +35,7 @@ export class Room implements IRoom {
   /** 销毁房间本身的计时器 */
   clearSelfTimer: NodeJS.Timeout;
   /** 死亡结算后的下一个状态 */
-  nextStateOfDieCheck: EGameStatus;
+  nextStateOfDieCheck: Extract<EGameStatus, "WOLF_KILL" | "DAY_DISCUSS">;
   /** 当前正在进行死亡结算的玩家序号 */
   curDyingPlayer: Player;
 

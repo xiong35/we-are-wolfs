@@ -1,28 +1,22 @@
+import { Index } from "@werewolf/shared";
 import { Context } from "koa";
 
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
-import { GameActHandler, Response, startCurrentState } from "./";
-import { ExileVoteHandler } from "./ExileVote";
+import { GameActHandler } from "./";
 
 export const DayDiscussHandler: GameActHandler = {
-  curStatus: GameStatus.DAY_DISCUSS,
+  curStatus: "DAY_DISCUSS",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
-    ctx: Context
+    target: Index
   ) {
     room.toFinishPlayers.delete(player.index);
 
     if (room.toFinishPlayers.size === 0) {
-      clearTimeout(room.timer);
-      DayDiscussHandler.endOfState(room);
+      room.gameController.tryEndState(DayDiscussHandler.curStatus);
     }
     return {
       status: 200,
@@ -32,11 +26,16 @@ export const DayDiscussHandler: GameActHandler = {
   },
 
   startOfState(room: Room) {
-    startCurrentState(this, room);
+    return {
+      action: "START",
+    };
   },
 
-  async endOfState(room: Room) {
-    room.nextStateOfDieCheck = GameStatus.WOLF_KILL;
-    ExileVoteHandler.startOfState(room);
+  endOfState(room: Room) {
+    room.nextStateOfDieCheck = "WOLF_KILL";
+
+    return {
+      nextState: "EXILE_VOTE",
+    };
   },
 };

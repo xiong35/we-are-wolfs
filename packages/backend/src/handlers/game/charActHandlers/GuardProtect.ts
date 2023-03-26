@@ -1,38 +1,26 @@
+import { IGuardStatus, Index, IWitchStatus } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
-import { createError } from "../../../middleware/handleError";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
-import { getVoteResult } from "../../../utils/getVoteResult";
-import { GameActHandler, Response, startCurrentState } from "./";
-import { BeforeDayDiscussHandler } from "./BeforeDayDiscuss";
-import { HunterCheckHandler } from "./HunterCheck";
-import { SheriffElectHandler } from "./SheriffElect";
+import { WError } from "../../../utils/error";
+import { GameActHandler } from "./";
 
 export const GuardProtectHandler: GameActHandler = {
-  curStatus: GameStatus.GUARD_PROTECT,
+  curStatus: "GUARD_PROTECT",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
-    ctx: Context
+    target: Index
   ) {
-    player.characterStatus.protects =
-      player.characterStatus.protects || [];
+    const status = player.characterStatus as IGuardStatus;
+    status.protects = status.protects || [];
 
-    const protects = player.characterStatus.protects;
+    const protects = status.protects;
     if (protects[room.currentDay - 2] === target && target) {
       // 如果两天保了同一个人
-      createError({
-        status: 401,
-        msg: "不能连续两天守护相同的人",
-      });
+      throw new WError(400, "不能连续两天守护相同的人");
     } else {
       protects[room.currentDay] = target;
       const protectPlayer = room.getPlayerByIndex(target);
@@ -43,12 +31,11 @@ export const GuardProtectHandler: GameActHandler = {
       ) {
         // 如果确实是今天被杀了
 
-        const witchStatus = room.players.find(
-          (p) => p.character === "WITCH"
-        )?.characterStatus;
+        const witchStatus = room.players.find((p) => p.character === "WITCH")
+          ?.characterStatus as IWitchStatus;
         if (
-          witchStatus?.MEDICINE?.usedAt === target &&
-          witchStatus?.MEDICINE?.usedDay === room.currentDay
+          witchStatus.MEDICINE?.usedAt === target &&
+          witchStatus.MEDICINE?.usedDay === room.currentDay
         ) {
           // 如果女巫恰好还救了, 就奶死了
           protectPlayer.die = {
@@ -72,17 +59,26 @@ export const GuardProtectHandler: GameActHandler = {
 
   startOfState(room: Room) {
     // 如果没有守卫就直接开启猎人的阶段
-    if (!room.needingCharacters.includes("GUARD"))
-      return GuardProtectHandler.endOfState(room);
-
-    startCurrentState(this, room);
+    if (!room.needingCharacters.includes("GUARD")) {
+      return {
+        action: "END",
+      };
+    } else {
+      return {
+        action: "START",
+      };
+    }
   },
 
-  async endOfState(room: Room) {
+  endOfState(room: Room) {
     if (room.currentDay === 0) {
-      return SheriffElectHandler.startOfState(room);
+      return {
+        nextState: "SHERIFF_ELECT",
+      };
+    } else {
+      return {
+        nextState: "BEFORE_DAY_DISCUSS",
+      };
     }
-
-    return BeforeDayDiscussHandler.startOfState(room);
   },
 };

@@ -1,30 +1,25 @@
+import { Index, IWerewolfStatus, None, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
-import { ShowMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ShowMsg";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
+import { WError } from "../../../utils/error";
 import { getVoteResult } from "../../../utils/getVoteResult";
-import { GameActHandler, Response, startCurrentState, status2Handler } from "./";
-import { WolfKillCheckHandler } from "./WolfKillCheck";
+import { emit } from "../../../ws/tsHelper";
+import { GameActHandler } from "./";
 
 export const WolfKillHandler: GameActHandler = {
-  curStatus: GameStatus.WOLF_KILL,
+  curStatus: "WOLF_KILL",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
-    ctx: Context
+    target: Index
   ) {
-    // 记录所作的操作
-    player.characterStatus.wantToKills =
-      player.characterStatus.wantToKills || [];
-    player.characterStatus.wantToKills[room.currentDay] = target;
+    // 记录想杀谁
+    const status = player.characterStatus as IWerewolfStatus;
+    status.wantToKills = status.wantToKills || [];
+    status.wantToKills[room.currentDay] = target;
 
     return {
       status: 200,
@@ -33,53 +28,68 @@ export const WolfKillHandler: GameActHandler = {
     };
   },
 
-  startOfState(room: Room, showCloseEye = true) {
-    room.currentDay++;
-    startCurrentState(this, room);
-    if (showCloseEye)
-      io.to(room.roomNumber).emit(Events.SHOW_MSG, {
+  startOfState(room) {
+    if (room.currentDay === None) {
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: "天黑请闭眼👁️",
-      } as ShowMsg);
+      });
+    }
+
+    /** IMPORTANT 狼人杀人刚开始时 curDay ++，进入晚上*/
+    room.currentDay++;
+
+    type A = { foo: number } | { bar: string };
+    const a: A = { foo: 1 };
+    console.log(a.foo);
+
+    return {
+      action: "START",
+    };
   },
 
-  async endOfState(room: Room) {
+  endOfState(room) {
     // 准备工作
-    const werewolfs = room.players.filter(
-      (p) => p.character === "WEREWOLF"
-    );
+    const werewolfs = room.players.filter((p) => p.character === "WEREWOLF");
     const today = room.currentDay;
     const votes = werewolfs.map((p) => ({
       from: p.index,
-      voteAt: p.characterStatus?.wantToKills?.[today],
+      voteAt: (p.characterStatus as IWerewolfStatus).wantToKills[today],
     }));
-    // console.log("# WolfKill", { votes });
+    console.log("# WolfKill", { votes });
 
     // 找到死者
     const voteRes = getVoteResult(votes);
     // console.log("# WolfKill", { voteRes });
     if (voteRes !== null) {
       // 如果没有放弃杀人'
-      const toKillIndex = voteRes[0];
+      const toKillIndex = voteRes[0]; // 现在的处理是平票就刀index小的
       const toKillPlayer = room.getPlayerByIndex(toKillIndex);
-      if (toKillPlayer) {
-        // 设置死亡
-        toKillPlayer.die = {
-          at: today,
-          fromIndex: werewolfs.reduce<index[]>(
-            (prev, cur) =>
-              cur.characterStatus?.wantToKills?.[today] ===
-              toKillIndex
-                ? [...prev, cur.index]
-                : prev,
-            [] as index[]
-          ),
-          fromCharacter: "WEREWOLF",
-        };
+
+      if (!toKillPlayer) {
+        throw new WError(400, "杀人目标不存在");
       }
-      // console.log("# WolfKill", { toKillPlayer });
+      // 设置死亡
+      toKillPlayer.die = {
+        at: today,
+        fromIndex: werewolfs.reduce<Index[]>(
+          (prev, cur) =>
+            (cur.characterStatus as IWerewolfStatus).wantToKills[today] ===
+            toKillIndex
+              ? [...prev, cur.index]
+              : prev,
+          []
+        ),
+        fromCharacter: "WEREWOLF",
+      };
+      console.log("# WolfKill", { toKillPlayer });
+    } else {
+      // 全员不出刀
+      console.log("# WolfKill pass");
     }
 
     // 进入下一状态， 狼人确认杀人结果
-    WolfKillCheckHandler.startOfState(room);
+    return {
+      nextState: "WOLF_KILL_CHECK",
+    };
   },
 };

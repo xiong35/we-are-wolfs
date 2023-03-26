@@ -1,17 +1,18 @@
 import {
   EGameStatus,
-  IChangeStatusMsg,
+  IGameEndMsg,
   IHttpResp,
   Index,
   TIMEOUT,
   WSEvents,
 } from "@werewolf/shared";
 import { Context } from "koa";
-import { type } from "os";
-
 import io from "../../..";
+import { CLEAR_ROOM_TIME } from "../../../constants/time";
+
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
+import { emit } from "../../../ws/tsHelper";
 
 import { BeforeDayDiscussHandler } from "./BeforeDayDiscuss";
 import { DayDiscussHandler } from "./DayDiscuss";
@@ -25,7 +26,7 @@ import { SeerCheckHandler } from "./SeerCheck";
 import { SheriffAssignHandler } from "./SheriffAssign";
 import { SheriffAssignCheckHandler } from "./SheriffAssignCheck";
 import { SheriffElectHandler } from "./SheriffElect";
-import { SheriffSpeachHandler } from "./SheriffSpeach";
+import { SheriffSpeechHandler } from "./SheriffSpeech";
 import { SheriffVoteHandler } from "./SheriffVote";
 import { SheriffVoteCheckHandler } from "./SheriffVoteCheck";
 import { WitchActHandler } from "./WitchAct";
@@ -39,8 +40,7 @@ export type StateStartResp = {
    * - SKIP: 整个跳过当前状态（尝试 start gotoNextState）
    * - END: 直接进入 endOfState 的调用
    */
-  action: "START" | "SKIP" | "END";
-  gotoNextState?: EGameStatus;
+  action: "START" | "END";
   argsToEndOfState?: any[];
 };
 
@@ -64,9 +64,8 @@ export interface GameActHandler {
   handleHttpInTheState: (
     room: Room,
     player: Player,
-    target: Index,
-    ctx: Context
-  ) => Promise<IHttpResp>;
+    target: Index
+  ) => IHttpResp;
   /**
    * 检查是否需要唤起 state
    * 链式调用\
@@ -109,7 +108,7 @@ export const status2Handler: Record<EGameStatus, GameActHandler> = {
   SEER_CHECK: SeerCheckHandler,
   SHERIFF_ASSIGN: SheriffAssignHandler,
   SHERIFF_ELECT: SheriffElectHandler,
-  SHERIFF_SPEECH: SheriffSpeachHandler,
+  SHERIFF_SPEECH: SheriffSpeechHandler,
   SHERIFF_VOTE: SheriffVoteHandler,
   WITCH_ACT: WitchActHandler,
   WOLF_KILL: WolfKillHandler,
@@ -129,7 +128,7 @@ export class GameController {
   /** 唤起给定节点的 startOfState */
   tryBeginState(statusToBegin: EGameStatus, ...argsToStartOfState: any[]) {
     const handler = status2Handler[statusToBegin];
-    const { action, argsToEndOfState, gotoNextState } = handler.startOfState(
+    const { action, argsToEndOfState } = handler.startOfState(
       this.room,
       ...argsToStartOfState
     );
@@ -138,16 +137,12 @@ export class GameController {
       statusToBegin,
       argsToStartOfState,
       action,
-      gotoNextState,
       argsToEndOfState,
     });
 
     switch (action) {
       case "START":
         this.doBeginState(statusToBegin, ...argsToEndOfState);
-        break;
-      case "SKIP":
-        this.tryBeginState(gotoNextState);
         break;
       case "END":
         this.tryEndState(statusToBegin, ...argsToEndOfState);
@@ -178,14 +173,14 @@ export class GameController {
     clearTimeout(this.timer);
 
     this.timer = setTimeout(() => {
-      handler.endOfState(room, ...argsToEndOfState);
+      this.tryEndState(statusToBegin, ...argsToEndOfState);
     }, timeout * 1000);
     // 通知玩家当前状态已经发生改变, 并通知设置天数
-    io.to(room.roomNumber).emit(WSEvents.CHANGE_STATUS, {
+    emit(room.roomNumber, WSEvents.CHANGE_STATUS, {
       day: room.currentDay,
       status: statusToBegin,
       timeout,
-    } as IChangeStatusMsg);
+    });
   }
 
   tryEndState(statusToEnd: EGameStatus, ...argsToEndOfState: any[]) {
@@ -204,39 +199,97 @@ export class GameController {
 
     this.tryBeginState(nextState, ...argsToNextStartOfState);
   }
+
+  /**
+   * 当前死亡结算正式结束, 设置此人 isDying 为 false\
+   * 判断是否还有要进行死亡检查的人
+   * 1. 如果有就把他设置为 curDyingPlayer, 进行 LeaveMsg
+   * 2. 如果没有, 设置 curDyingPlayer 为 null, 进行 nextState, 并将他设为 null
+   */
+  gotoNextStateAfterHandleDie(): EGameStatus {
+    const { room } = this;
+    if (this.checkGameOver()) return;
+
+    room.curDyingPlayer.isDying = false;
+    room.curDyingPlayer.isAlive = false;
+
+    const dyingPlayer = room.players.find((p) => p.isDying);
+
+    if (dyingPlayer) {
+      room.curDyingPlayer = dyingPlayer;
+      return "LEAVE_MSG";
+    } else {
+      room.curDyingPlayer = null;
+      // 单独处理, 从夜晚进入死亡结算再进入白天时
+      // 将未结束发言的人设为所有活着的人
+      // 同时设置能被投票的人为活着的
+      if (room.nextStateOfDieCheck === "DAY_DISCUSS") {
+        room.toFinishPlayers = new Set(
+          room.players.filter((p) => p.isAlive).map((p) => p.index)
+        );
+        room.players.forEach((p) => (p.canBeVoted = p.isAlive));
+      }
+
+      const nextState = room.nextStateOfDieCheck;
+      room.nextStateOfDieCheck = null;
+      return nextState;
+    }
+  }
+
+  private checkGameOver(): boolean {
+    // TODO 添加游戏结束的状态
+    const { room } = this;
+
+    const { werewolf, villager } = room.players.reduce(
+      (prev, p) => {
+        if (p.isAlive) {
+          if (p.character === "WEREWOLF") prev.werewolf++;
+          else prev.villager++;
+        }
+        return prev;
+      },
+      { werewolf: 0, villager: 0 }
+    );
+
+    let winner: IGameEndMsg["winner"] | undefined;
+    if (werewolf >= villager) winner = "WEREWOLF";
+    if (werewolf === 0) winner = "VILLAGER";
+
+    // console.log("# checkGameOver", { werewolf, villager }); // TODO
+    if (winner) {
+      // 通知游戏已结束
+      emit(room.roomNumber, WSEvents.GAME_END, {
+        winner,
+      });
+
+      /* 设置房间状态 */
+      room.isFinished = true;
+      clearTimeout(this.timer);
+      clearTimeout(room.clearSelfTimer);
+
+      /* 关闭 sockets */
+      // make all Socket instances leave the room
+      io.socketsLeave(room.roomNumber);
+      // make all Socket instances in the room disconnect (and close the low-level connection)
+      io.in(room.roomNumber).disconnectSockets(true);
+
+      /* 删除此房间 */
+      // TODO 定时器？？换成定时任务好一些吧
+      setTimeout(() => {
+        Room.clearRoom(room.roomNumber);
+      }, CLEAR_ROOM_TIME);
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  handleHttp(player: Player, target: Index) {
+    return status2Handler[this.room.curStatus].handleHttpInTheState(
+      this.room,
+      player,
+      target
+    );
+  }
 }
-
-/**
- * 当前死亡结算正式结束, 设置此人 isDying 为 false\
- * 判断是否还有要进行死亡检查的人
- * 1. 如果有就把他设置为 curDyingPlayer, 进行 LeaveMsg
- * 2. 如果没有, 设置 curDyingPlayer 为 null, 进行 nextState, 并将他设为 null
- */
-// export function gotoNextStateAfterHandleDie(room: Room) {
-//   if (checkGameOver(room)) return;
-
-//   room.curDyingPlayer.isDying = false;
-//   room.curDyingPlayer.isAlive = false;
-
-//   const dyingPlayer = room.players.find((p) => p.isDying);
-//   // console.log("# index", room.players);
-//   // console.log("# index", { dyingPlayer });
-
-//   if (dyingPlayer) {
-//     room.curDyingPlayer = dyingPlayer;
-//     return LeaveMsgHandler.startOfState(room);
-//   } else {
-//     room.curDyingPlayer = null;
-//     // 单独处理, 从夜晚进入死亡结算再进入白天时
-//     // 将未结束发言的人设为所有活着的人
-//     // 同时设置能被投票的人为活着的
-//     if (room.nextStateOfDieCheck === GameStatus.DAY_DISCUSS) {
-//       room.toFinishPlayers = new Set(
-//         room.players.filter((p) => p.isAlive).map((p) => p.index)
-//       );
-//       room.players.forEach((p) => (p.canBeVoted = p.isAlive));
-//     }
-//     status2Handler[room.nextStateOfDieCheck].startOfState(room);
-//     room.nextStateOfDieCheck = null;
-//   }
-// }

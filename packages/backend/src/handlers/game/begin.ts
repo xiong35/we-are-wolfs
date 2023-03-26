@@ -55,7 +55,7 @@ export const gameBegin: IMiddleware = async (ctx) => {
         p.characterStatus = {
           shootAt: {
             day: -1,
-            player: -1,
+            playerIndex: -1,
           },
         };
         break;

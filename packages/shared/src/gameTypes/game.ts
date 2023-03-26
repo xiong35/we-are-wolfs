@@ -87,6 +87,7 @@ export type IDieInfo = {
   fromIndex: Index[];
   /**被哪个角色杀死的 */
   fromCharacter: ECharacter;
+  saved?: boolean;
 } | null;
 
 export type IPlayer = IPublicPlayer & {

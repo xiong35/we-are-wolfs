@@ -1,24 +1,17 @@
+import { Index } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
-import { getVoteResult } from "../../../utils/getVoteResult";
-import { GameActHandler, Response, startCurrentState } from "./";
-import { BeforeDayDiscussHandler } from "./BeforeDayDiscuss";
+import { GameActHandler } from "./";
 
 export const SheriffVoteCheckHandler: GameActHandler = {
-  curStatus: GameStatus.SHERIFF_VOTE_CHECK,
+  curStatus: "SHERIFF_VOTE_CHECK",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
-    ctx: Context
+    target: Index
   ) {
     return {
       status: 200,
@@ -28,10 +21,14 @@ export const SheriffVoteCheckHandler: GameActHandler = {
   },
 
   startOfState(room: Room) {
-    startCurrentState(this, room);
+    return {
+      action: "START",
+    };
   },
 
-  async endOfState(room: Room) {
-    BeforeDayDiscussHandler.startOfState(room);
+  endOfState(room: Room) {
+    return {
+      nextState: "BEFORE_DAY_DISCUSS",
+    };
   },
 };
