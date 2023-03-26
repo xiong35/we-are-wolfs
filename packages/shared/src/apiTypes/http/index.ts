@@ -12,3 +12,4 @@ export * from "./roomCreate";
 export * from "./roomJoin";
 export * from "./roomGetMeta";
 export * from "./gameBegin";
+export * from "./gameAct";
