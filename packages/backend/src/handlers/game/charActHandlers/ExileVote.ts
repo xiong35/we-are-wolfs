@@ -1,35 +1,28 @@
+import { Index, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
-import { GameStatus, TIMEOUT } from "../../../../../werewolf-frontend/shared/GameDefs";
-import { index } from "../../../../../werewolf-frontend/shared/ModelDefs";
-import { Events } from "../../../../../werewolf-frontend/shared/WSEvents";
-import { ChangeStatusMsg } from "../../../../../werewolf-frontend/shared/WSMsg/ChangeStatus";
-import { createError } from "../../../middleware/handleError";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
+import { WError } from "../../../utils/error";
 import { getVoteResult, Vote } from "../../../utils/getVoteResult";
 import { renderHintNPlayers } from "../../../utils/renderHintNPlayers";
-import { GameActHandler, Response, startCurrentState } from "./";
-import { DayDiscussHandler } from "./DayDiscuss";
-import { ExileVoteCheckHandler } from "./ExileVoteCheck";
+import { emit } from "../../../ws/tsHelper";
+import { GameActHandler } from "./";
 
 export const ExileVoteHandler: GameActHandler = {
-  curStatus: GameStatus.EXILE_VOTE,
+  curStatus: "EXILE_VOTE",
 
-  async handleHttpInTheState(
+  handleHttpInTheState(
     room: Room,
     player: Player,
-    target: index,
+    target: Index,
     ctx: Context
   ) {
-    if (!room.getPlayerByIndex(target).canBeVoted)
-      createError({
-        status: 401,
-        msg: "此玩家不参与投票",
-      });
+    if (!room.getPlayerByIndex(target).canBeVoted) {
+      throw new WError(400, "此玩家不参与投票");
+    }
 
-    player.hasVotedAt[room.currentDay] = target;
+    player.exileVotes[room.currentDay] = target;
 
     return {
       status: 200,
@@ -39,13 +32,15 @@ export const ExileVoteHandler: GameActHandler = {
   },
 
   startOfState(room: Room) {
-    startCurrentState(this, room);
+    return {
+      action: "START",
+    };
   },
 
-  async endOfState(room: Room) {
+  endOfState(room: Room) {
     const votes: Vote[] = room.players.map((p) => ({
       from: p.index,
-      voteAt: p.hasVotedAt[room.currentDay],
+      voteAt: p.exileVotes[room.currentDay],
     }));
 
     const highestVotes = getVoteResult(votes);
@@ -54,57 +49,54 @@ export const ExileVoteHandler: GameActHandler = {
     if (!highestVotes || highestVotes.length === 0) {
       // 如果所有人都弃票
       // 直接进入白天
-      io.to(room.roomNumber).emit(Events.SHOW_MSG, {
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: "所有人都弃票, 即将进入夜晚",
       });
-      return ExileVoteCheckHandler.startOfState(
-        room,
-        GameStatus.WOLF_KILL
-      );
+
+      return {
+        nextState: "WOLF_KILL",
+      };
     } else if (highestVotes.length === 1) {
       // 如果有票数最高的人
       // 此人被处死, 进入死亡结算
       room.getPlayerByIndex(highestVotes[0]).isDying = true;
-      io.to(room.roomNumber).emit(Events.SHOW_MSG, {
-        innerHTML: renderHintNPlayers(
-          "被处死的玩家为:",
-          highestVotes
-        ),
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
+        innerHTML: renderHintNPlayers("被处死的玩家为:", highestVotes),
       });
+
       room.curDyingPlayer = room.getPlayerByIndex(highestVotes[0]);
 
       room.curDyingPlayer.isDying = true;
       room.curDyingPlayer.isAlive = false;
-      return ExileVoteCheckHandler.startOfState(
-        room,
-        GameStatus.LEAVE_MSG
-      );
+      return {
+        nextState: "EXILE_VOTE_CHECK",
+        argsToNextStartOfState: ["LEAVE_MSG"],
+      };
     } else {
       // 如果多人平票
 
       // 警长当 1.5 票
       const sheriff = room.players.find((p) => p.isSheriff);
       if (sheriff) {
-        const sheriffChoice = sheriff.hasVotedAt[room.currentDay];
+        const sheriffChoice = sheriff.exileVotes[room.currentDay];
         if (highestVotes.includes(sheriffChoice)) {
           // 虽然有平票, 但是警长选择的人在此之中, 则此人死亡
-          room.getPlayerByIndex(highestVotes[0]).isDying = true;
-          io.to(room.roomNumber).emit(Events.SHOW_MSG, {
-            innerHTML: renderHintNPlayers("被处死的玩家为:", [
-              sheriffChoice,
-            ]),
+          const toDie = room.getPlayerByIndex(highestVotes[0]);
+
+          emit(room.roomNumber, WSEvents.SHOW_MSG, {
+            innerHTML: renderHintNPlayers("被处死的玩家为:", [sheriffChoice]),
           });
-          room.curDyingPlayer = room.getPlayerByIndex(
-            highestVotes[0]
-          );
-          room.curDyingPlayer.isDying = true;
-          room.curDyingPlayer.isAlive = false;
-          return ExileVoteCheckHandler.startOfState(
-            room,
-            GameStatus.LEAVE_MSG
-          );
+
+          room.curDyingPlayer = toDie;
+          toDie.isDying = true;
+          toDie.isAlive = false;
+          return {
+            nextState: "EXILE_VOTE_CHECK",
+            argsToNextStartOfState: ["LEAVE_MSG"],
+          };
         }
       }
+
       // 若最高票中无警长的影响
       // 设置参与投票的人是他们几个
       // 设置他们未结束发言
@@ -112,19 +104,20 @@ export const ExileVoteHandler: GameActHandler = {
         (p) => (p.canBeVoted = highestVotes.includes(p.index))
       );
       // 告知所有人现在应该再依次投票
-      io.to(room.roomNumber).emit(Events.SHOW_MSG, {
+      emit(room.roomNumber, WSEvents.SHOW_MSG, {
         innerHTML: renderHintNPlayers(
           "平票的玩家如下, 请再次依次进行发言",
           highestVotes
         ),
       });
+
       room.toFinishPlayers = new Set(highestVotes);
 
       // 设置下一阶段为自由发言
-      return ExileVoteCheckHandler.startOfState(
-        room,
-        GameStatus.DAY_DISCUSS
-      );
+      return {
+        nextState: "EXILE_VOTE_CHECK",
+        argsToNextStartOfState: ["DAY_DISCUSS"],
+      };
     }
   },
 };
