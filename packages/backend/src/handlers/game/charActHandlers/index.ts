@@ -207,7 +207,7 @@ export class GameController {
    * 1. 如果有就把他设置为 curDyingPlayer, 进行 LeaveMsg
    * 2. 如果没有, 设置 curDyingPlayer 为 null, 进行 nextState, 并将他设为 null
    */
-  gotoNextStateAfterHandleDie() {
+  gotoNextStateAfterHandleDie(): EGameStatus {
     const { room } = this;
     if (this.checkGameOver()) return;
 
@@ -218,7 +218,7 @@ export class GameController {
 
     if (dyingPlayer) {
       room.curDyingPlayer = dyingPlayer;
-      return this.tryBeginState("LEAVE_MSG");
+      return "LEAVE_MSG";
     } else {
       room.curDyingPlayer = null;
       // 单独处理, 从夜晚进入死亡结算再进入白天时
@@ -230,8 +230,10 @@ export class GameController {
         );
         room.players.forEach((p) => (p.canBeVoted = p.isAlive));
       }
-      this.tryBeginState(room.nextStateOfDieCheck);
+
+      const nextState = room.nextStateOfDieCheck;
       room.nextStateOfDieCheck = null;
+      return nextState;
     }
   }
 
