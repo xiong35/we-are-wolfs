@@ -1,7 +1,6 @@
 import { IHttpResp, Index, ISeerActResp, ISeerStatus } from "@werewolf/shared";
 import { Context } from "koa";
 
-import io from "../../..";
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
 import { WError } from "../../../utils/error";
