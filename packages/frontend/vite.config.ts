@@ -9,6 +9,9 @@ export default defineConfig({
     cors: true,
     port: 3000,
     base: "werewolf/fe",
+    watch: {
+      usePolling: true,
+    },
   },
   build: {
     sourcemap: "inline",

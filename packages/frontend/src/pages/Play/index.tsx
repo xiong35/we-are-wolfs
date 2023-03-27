@@ -2,7 +2,7 @@ import styles from "./index.module.less";
 import { FC, useState } from "react";
 import { PlayerList } from "../../components/PlayerList";
 import { getMockPlayers } from "@werewolf/mock";
-import { date, gameStatus, gameStatusTimeLeft } from "../../signals/game";
+import { date, gameStatus, gameStatusTimeLeft, self } from "../../signals/game";
 
 import { ReactComponent as SVGMoon } from "../../assets/moon.svg";
 import { ReactComponent as SVGSun } from "../../assets/sun.svg";
@@ -14,12 +14,14 @@ export type IPlayProps = {};
 
 const Play: FC<IPlayProps> = (props) => {
   const dateVal = date.value;
+  const selfVal = self.value;
+  console.log({ dateVal, selfVal });
 
   const [showCharacter, setShowCharacter] = useState(false);
 
   return (
     <div className={styles["w-play"]}>
-      <PlayerList playerList={getMockPlayers(7)}></PlayerList>
+      <PlayerList playerList={getMockPlayers(6)}></PlayerList>
 
       <div className={styles["date"]}>
         Day {Math.ceil(dateVal / 2)}
@@ -59,7 +61,12 @@ const Play: FC<IPlayProps> = (props) => {
           content="事件记录"
         ></Btn> */}
 
-        {showCharacter && <CharacterInfo />}
+        {showCharacter && (
+          <CharacterInfo
+            close={() => setShowCharacter(false)}
+            character={selfVal.character}
+          />
+        )}
         {/* <Actions></Actions>
         <Memo></Memo>
         <Events></Events> */}

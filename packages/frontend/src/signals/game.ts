@@ -29,7 +29,11 @@ export const players = signal<IPublicPlayer[]>([]);
 /** 角色配置 */
 export const needingCharacters = signal<ECharacter[]>([]);
 /** 自己的详细状态 */
-export const self = signal<IPlayer>(defaultPlayer);
+export const self = signal<IPlayer>({
+  ...defaultPlayer,
+  ...getMockPlayers(1)[1],
+  character: "WEREWOLF",
+});
 
 /** 天数 */
 export const date = signal<Day>(None);
