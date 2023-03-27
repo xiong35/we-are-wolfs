@@ -6,6 +6,7 @@ const CreateRoom = loadable(() => import("../pages/CreateRoom"));
 const JoinRoom = loadable(() => import("../pages/JoinRoom"));
 const WaitRoom = loadable(() => import("../pages/WaitRoom"));
 const NoMatch = loadable(() => import("../pages/NoMatch"));
+const Play = loadable(() => import("../pages/Play"));
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
   {
     path: "/waitRoom",
     element: <WaitRoom />,
+  },
+  {
+    path: "/play",
+    element: <Play />,
   },
   {
     path: "*",
