@@ -9,6 +9,9 @@ import { ReactComponent as SVGSun } from "../../assets/sun.svg";
 import { Btn } from "../../components/Btn";
 import { CharacterInfo } from "./components/CharacterInfo";
 import { ZHGameStatusI18N } from "@werewolf/shared";
+import { Actions } from "./components/Actions";
+import { BottomActions } from "./components/BottomActions";
+import { resetActions, setIsActing } from "../../signals/actions";
 
 export type IPlayProps = {};
 
@@ -18,6 +21,7 @@ const Play: FC<IPlayProps> = (props) => {
   console.log({ dateVal, selfVal });
 
   const [showCharacter, setShowCharacter] = useState(false);
+  const [showActions, setShowActions] = useState(false);
 
   return (
     <div className={styles["w-play"]}>
@@ -44,12 +48,17 @@ const Play: FC<IPlayProps> = (props) => {
         <Btn /* disabled="isActing"  */ onClick={() => setShowCharacter(true)}>
           查看角色
         </Btn>
-        {/* <Btn
-          disabled="isActing"
-          onClick="showActions = true"
-          className="{ active: canAct }"
-          content="显示操作"
-        ></Btn>
+        <Btn
+          // disabled="isActing"
+          onClick={() => {
+            setShowActions(true);
+            resetActions();
+          }}
+          // className="{ active: canAct }"
+        >
+          显示操作
+        </Btn>
+        {/* 
         <Btn
           disabled="isActing"
           onClick="showMemo = true"
@@ -67,12 +76,14 @@ const Play: FC<IPlayProps> = (props) => {
             character={selfVal.character}
           />
         )}
-        {/* <Actions></Actions>
+
+        {showActions && <Actions close={() => setShowActions(false)}></Actions>}
+        {/*
         <Memo></Memo>
         <Events></Events> */}
       </div>
 
-      {/* <BottomActions></BottomActions> */}
+      <BottomActions></BottomActions>
     </div>
   );
 };
