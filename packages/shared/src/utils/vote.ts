@@ -1,4 +1,10 @@
-import { Index } from "@werewolf/shared";
+import { Index } from "../gameTypes";
+
+export type Vote = {
+  from: Index;
+  /** 弃票则为 falsy 值 */
+  voteAt: Index;
+};
 
 /**
  * @param votes 投票结果的数组, 每一项是某个玩家投票的玩家编号
@@ -48,12 +54,6 @@ export function getVoteSituation(votes: Vote[]): VoteSituationRecord {
 
   return voteSituation;
 }
-
-export type Vote = {
-  from: Index;
-  /** 弃票则为 falsy 值 */
-  voteAt: Index;
-};
 
 /** key 投票的*目标*, value 为投给这个玩家的人 */
 type VoteSituationRecord = Record<Index, Index[]>;

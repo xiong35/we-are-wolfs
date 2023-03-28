@@ -1,10 +1,9 @@
-import { Index, WSEvents } from "@werewolf/shared";
+import { getVoteResult, Index, Vote, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
 import { WError } from "../../../utils/error";
-import { getVoteResult, Vote } from "../../../utils/getVoteResult";
 import { renderHintNPlayers } from "../../../utils/renderHintNPlayers";
 import { emit } from "../../../ws/tsHelper";
 import { GameActHandler } from "./";
@@ -12,11 +11,7 @@ import { GameActHandler } from "./";
 export const ExileVoteHandler: GameActHandler = {
   curStatus: "EXILE_VOTE",
 
-  handleHttpInTheState(
-    room: Room,
-    player: Player,
-    target: Index
-  ) {
+  handleHttpInTheState(room: Room, player: Player, target: Index) {
     if (!room.getPlayerByIndex(target).canBeVoted) {
       throw new WError(400, "此玩家不参与投票");
     }
