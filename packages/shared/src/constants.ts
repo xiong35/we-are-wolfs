@@ -15,6 +15,7 @@ export const WS_PATH = "" + WS_PATH_CLIPPED;
 export const HeaderPlayerID = "w-player-id";
 export const HeaderRoomNumber = "w-room-number";
 
-export const TokenKey = "w-werewolf-token";
+export const StoragePrefix = `w-werewolf-`;
+export const TokenKey = `${StoragePrefix}token`;
 
 export const None = -1;

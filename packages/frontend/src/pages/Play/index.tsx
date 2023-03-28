@@ -11,7 +11,9 @@ import { CharacterInfo } from "./components/CharacterInfo";
 import { ZHGameStatusI18N } from "@werewolf/shared";
 import { Actions } from "./components/Actions";
 import { BottomActions } from "./components/BottomActions";
-import { resetActions, setIsActing } from "../../signals/actions";
+import { getIsActing, resetActions, setIsActing } from "../../signals/actions";
+import classNames from "classnames";
+import { Memo } from "./components/Memo";
 
 export type IPlayProps = {};
 
@@ -22,6 +24,9 @@ const Play: FC<IPlayProps> = (props) => {
 
   const [showCharacter, setShowCharacter] = useState(false);
   const [showActions, setShowActions] = useState(false);
+  const [showMemo, setShowMemo] = useState(false);
+  const [showEvents, setShowEvents] = useState(false);
+  const isActing = getIsActing();
 
   return (
     <div className={styles["w-play"]}>
@@ -45,27 +50,18 @@ const Play: FC<IPlayProps> = (props) => {
       </div>
 
       <div className={styles["actions"]}>
-        <Btn /* disabled="isActing"  */ onClick={() => setShowCharacter(true)}>
+        <Btn disabled={isActing} onClick={() => setShowCharacter(true)}>
           查看角色
         </Btn>
-        <Btn
-          // disabled="isActing"
-          onClick={() => {
-            setShowActions(true);
-            resetActions();
-          }}
-          // className="{ active: canAct }"
-        >
+        <Btn disabled={isActing} onClick={() => setShowActions(true)}>
           显示操作
+        </Btn>
+        <Btn disabled={isActing} onClick={() => setShowMemo(true)}>
+          备忘速记
         </Btn>
         {/* 
         <Btn
-          disabled="isActing"
-          onClick="showMemo = true"
-          content="备忘速记"
-        ></Btn>
-        <Btn
-          disabled="isActing"
+          disabled={isActing}
           onClick="showEvents = true"
           content="事件记录"
         ></Btn> */}
@@ -78,12 +74,12 @@ const Play: FC<IPlayProps> = (props) => {
         )}
 
         {showActions && <Actions close={() => setShowActions(false)}></Actions>}
+        {showMemo && <Memo close={() => setShowMemo(false)} />}
         {/*
-        <Memo></Memo>
         <Events></Events> */}
       </div>
 
-      <BottomActions></BottomActions>
+      <BottomActions />
     </div>
   );
 };
