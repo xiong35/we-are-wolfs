@@ -1,13 +1,11 @@
-import { Index } from "../../gameTypes";
+import { IGameActReq } from "./gameAct";
 
 /**
  * 玩家发动角色能力\
  * 执行操作的目标玩家编号\
  * 若为 女巫, 则正编号代表救人, 负编号代表杀人
  */
-export type ISeerActReq = {
-  target: Index;
-};
+export type ISeerActReq = IGameActReq
 
 /**
  * 发动技能后的返回值，

@@ -4,14 +4,16 @@ import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), svgr()],
+  plugins: [
+    react({
+      include: "**/*.tsx",
+    }),
+    svgr(),
+  ],
   server: {
     cors: true,
     port: 3000,
     base: "werewolf/fe",
-    watch: {
-      usePolling: true,
-    },
   },
   build: {
     sourcemap: "inline",

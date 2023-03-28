@@ -8,14 +8,14 @@ import { Day, Index } from "./game";
  * 女巫的药剂类型
  * 灵药 | 毒药
  */
-export type Potion = "POISON" | "MEDICINE";
+export type EPotion = "POISON" | "MEDICINE";
 /** 药的使用情况 */
 type PotionStatus = {
   usedDay: Day;
   usedAt: Index;
 };
 /** 女巫两种药的使用情况（null则为未使用） */
-export type IWitchStatus = Record<Potion, PotionStatus | null>;
+export type IWitchStatus = Record<EPotion, PotionStatus | null>;
 
 export type IHunterStatus = {
   /** 记录开枪的信息 */
