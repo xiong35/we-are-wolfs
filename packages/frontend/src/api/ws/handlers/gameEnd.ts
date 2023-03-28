@@ -1,11 +1,11 @@
 import { IPlayer, WSEvents } from "@werewolf/shared";
-import { groupedGameEvents } from "../../signals/computeGameEvents";
-import { showDialog } from "../../signals/dialog";
-import { players, refresh, self } from "../../signals/game";
-import { saveRecord } from "../../utils/record";
-import { getToken } from "../../utils/token";
-import { socket } from "./setup";
-import { HandlerOf } from "./tsHelper";
+import { groupedGameEvents } from "../../../signals/computeGameEvents";
+import { showDialog } from "../../../signals/dialog";
+import { players, refresh, self } from "../../../signals/game";
+import { saveRecord } from "../../../utils/record";
+import { getToken } from "../../../utils/token";
+import { socket } from "../setup";
+import { HandlerOf } from "../tsHelper";
 
 export const gameEnd: HandlerOf<WSEvents.GAME_END> = async (msg) => {
   socket.removeAllListeners();
