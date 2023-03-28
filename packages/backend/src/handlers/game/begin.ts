@@ -71,8 +71,8 @@ export const gameBegin: IMiddleware = async (ctx) => {
         break;
       case "WITCH":
         p.characterStatus = {
-          POISON: { usedDay: -1, usedAt: -1 },
-          MEDICINE: { usedDay: -1, usedAt: -1 },
+          POISON: null,
+          MEDICINE: null,
         };
         break;
       case "VILLAGER":
