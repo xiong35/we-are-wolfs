@@ -2,7 +2,10 @@ import { SERVER_DOMAIN, WSEvents, WS_PATH } from "@werewolf/shared";
 import io from "socket.io-client";
 import { showDialog } from "../../signals/dialog";
 import { getToken } from "../../utils/token";
+import { gameBegin } from "./handlers/gameBegin";
+import { gameEnd } from "./handlers/gameEnd";
 import { roomJoin } from "./handlers/roomJoin";
+import { showWSMsg } from "./handlers/showWSMsg";
 import { on } from "./tsHelper";
 
 export let socket: SocketIOClient.Socket;
@@ -28,10 +31,10 @@ export function setupSocket() {
   on(socket, WSEvents.PING, (ping) => {
     console.log(ping);
   });
-  // on(socket, WSEvents.GAME_BEGIN, gameBegin);
-  // on(socket, WSEvents.GAME_END, gameEnd);
+  on(socket, WSEvents.GAME_BEGIN, gameBegin);
+  on(socket, WSEvents.GAME_END, gameEnd);
   on(socket, WSEvents.ROOM_JOIN, roomJoin);
-  // on(socket, WSEvents.SHOW_MSG, showWSMsg);
+  on(socket, WSEvents.SHOW_MSG, showWSMsg);
 
   socket.emit(WSEvents.FE_JOIN_ROOM, roomNumber);
 }

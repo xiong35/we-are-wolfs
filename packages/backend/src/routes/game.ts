@@ -10,8 +10,10 @@ import { gameBegin } from "../handlers/game/begin";
 const gameRouter = new Router();
 
 gameRouter.post("game begin", "/begin", gameBegin);
+// TODO
 // gameRouter.post("game status", "/status", gameStatus); // 查看游戏状态相关 api
 gameRouter.post("game act", "/act", gameAct); // 进行角色的操作相关 api
+// TODO
 // gameRouter.use(
 //   "/hint", // 获取提示信息并在前端显示弹窗的 api
 //   hintResultRouter.routes(),
