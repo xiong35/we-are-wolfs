@@ -14,6 +14,7 @@ import { BottomActions } from "./components/BottomActions";
 import { getIsActing, resetActions, setIsActing } from "../../signals/actions";
 import classNames from "classnames";
 import { Memo } from "./components/Memo";
+import { Events } from "./components/Events";
 
 export type IPlayProps = {};
 
@@ -59,12 +60,9 @@ const Play: FC<IPlayProps> = (props) => {
         <Btn disabled={isActing} onClick={() => setShowMemo(true)}>
           备忘速记
         </Btn>
-        {/* 
-        <Btn
-          disabled={isActing}
-          onClick="showEvents = true"
-          content="事件记录"
-        ></Btn> */}
+        <Btn disabled={isActing} onClick={() => setShowEvents(true)}>
+          事件记录
+        </Btn>
 
         {showCharacter && (
           <CharacterInfo
@@ -75,8 +73,7 @@ const Play: FC<IPlayProps> = (props) => {
 
         {showActions && <Actions close={() => setShowActions(false)}></Actions>}
         {showMemo && <Memo close={() => setShowMemo(false)} />}
-        {/*
-        <Events></Events> */}
+        {showEvents && <Events close={() => setShowEvents(false)} />}
       </div>
 
       <BottomActions />
