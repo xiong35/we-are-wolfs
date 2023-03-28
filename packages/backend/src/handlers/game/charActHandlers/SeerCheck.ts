@@ -1,12 +1,9 @@
 import { IHttpResp, Index, ISeerActResp, ISeerStatus } from "@werewolf/shared";
-import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
 import { WError } from "../../../utils/error";
-import { getVoteResult } from "../../../utils/getVoteResult";
 import { GameActHandler } from "./";
-import { WitchActHandler } from "./WitchAct";
 
 export const SeerCheckHandler: GameActHandler = {
   curStatus: "SEER_CHECK",

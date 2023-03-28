@@ -1,10 +1,9 @@
-import { Index, IWerewolfStatus, None, WSEvents } from "@werewolf/shared";
+import { getVoteResult, Index, IWerewolfStatus, None, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
 import { WError } from "../../../utils/error";
-import { getVoteResult } from "../../../utils/getVoteResult";
 import { emit } from "../../../ws/tsHelper";
 import { GameActHandler } from "./";
 
