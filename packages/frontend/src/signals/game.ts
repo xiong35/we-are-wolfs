@@ -1,5 +1,4 @@
 import { signal } from "@preact/signals-react";
-import { getMockPlayers } from "@werewolf/mock";
 import {
   Day,
   ECharacter,
@@ -31,8 +30,6 @@ export const needingCharacters = signal<ECharacter[]>([]);
 /** 自己的详细状态 */
 export const self = signal<IPlayer>({
   ...defaultPlayer,
-  ...getMockPlayers(1)[1],
-  character: "WEREWOLF",
 });
 
 /** 天数 */

@@ -1,8 +1,13 @@
 import styles from "./index.module.less";
 import { FC, useState } from "react";
 import { PlayerList } from "../../components/PlayerList";
-import { getMockPlayers } from "@werewolf/mock";
-import { date, gameStatus, gameStatusTimeLeft, self } from "../../signals/game";
+import {
+  date,
+  gameStatus,
+  gameStatusTimeLeft,
+  players,
+  self,
+} from "../../signals/game";
 
 import { ReactComponent as SVGMoon } from "../../assets/moon.svg";
 import { ReactComponent as SVGSun } from "../../assets/sun.svg";
@@ -31,7 +36,7 @@ const Play: FC<IPlayProps> = (props) => {
 
   return (
     <div className={styles["w-play"]}>
-      <PlayerList playerList={getMockPlayers(6)}></PlayerList>
+      <PlayerList playerList={players.value}></PlayerList>
 
       <div className={styles["date"]}>
         Day {Math.ceil(dateVal / 2)}
