@@ -8,6 +8,8 @@ import {
   None,
   TIMEOUT,
 } from "@werewolf/shared";
+import { gameStatusReq } from "../api/http/gameStatus";
+import { showDialog } from "./dialog";
 
 const defaultPlayer: IPlayer = {
   id: "",
@@ -41,15 +43,15 @@ export const gameStatusTimeLeft = signal(TIMEOUT["WOLF_KILL"]);
 
 /**
  * 获得最新的游戏信息
- * # TODO
  */
 export async function refresh() {
-  // const data = await getGameStatus({});
-  // if (!data) return;
-  // date.value = data.curDay;
-  // gameStatus.value = data.gameStatus;
-  // players.value = data.players;
-  // self.value = data.self;
+  const data = await gameStatusReq();
+  if (!data) return;
+
+  date.value = data.curDay;
+  gameStatus.value = data.gameStatus;
+  players.value = data.players;
+  self.value = data.self;
 }
 
 /** 重置所有游戏状态 */

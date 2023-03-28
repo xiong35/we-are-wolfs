@@ -126,7 +126,7 @@ function mergeEvents(
     .sort((e1, e2) => e1.at - e2.at);
 }
 
-export const groupedIGameEventsIGameEvent = computed(() => {
+export const groupedGameEvents = computed(() => {
   const list: IGameEvent[][] = [];
   gameEvents.value.forEach((e) => {
     const at = e.at;
