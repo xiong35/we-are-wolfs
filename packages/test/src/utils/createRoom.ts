@@ -1,5 +1,6 @@
 import { Config } from "../configs";
 import { getPages } from "./getPages";
+import { sleep } from "./sleep";
 import { startMasterPlayer } from "./startMasterPlayer";
 import { startNormalPlayer } from "./startNormalPlayer";
 
@@ -14,8 +15,10 @@ export async function createRoom(config: Config) {
     await startNormalPlayer(p, config);
   }
 
-  await firstPage.waitForSelector(".w-start");
-  await firstPage.click(".w-start");
+  const startBtn = await firstPage.waitForSelector(".w-start:not(.disabled)");
+  console.log("# createRoom", "startBtn got");
+  await sleep(500);
+  await startBtn.click();
 
   return { pages, browsers, firstPage, restPages };
 }

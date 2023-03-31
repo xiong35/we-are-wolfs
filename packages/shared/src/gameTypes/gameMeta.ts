@@ -2,6 +2,7 @@
  * 游戏规则相关的定义
  */
 
+import { IS_DEV } from "../..";
 import { ID } from "./game";
 
 /**
@@ -64,27 +65,49 @@ export type EGameStatus =
   | "GAME_OVER";
 
 /** 预设的每个阶段的时间限制(s) */
-export const TIMEOUT: Record<EGameStatus, number> = {
-  WOLF_KILL: 25,
-  WOLF_KILL_CHECK: 5,
-  SEER_CHECK: 20,
-  WITCH_ACT: 25,
-  GUARD_PROTECT: 20,
-  HUNTER_CHECK: 5,
-  SHERIFF_ELECT: 15,
-  SHERIFF_VOTE: 25,
-  SHERIFF_VOTE_CHECK: 5,
-  SHERIFF_ASSIGN: 20,
-  DAY_DISCUSS: 996,
-  EXILE_VOTE: 20,
-  EXILE_VOTE_CHECK: 5,
-  HUNTER_SHOOT: 20,
-  LEAVE_MSG: 996,
-  BEFORE_DAY_DISCUSS: 5,
-  SHERIFF_SPEECH: 996,
-  SHERIFF_ASSIGN_CHECK: 5,
-  GAME_OVER: 996,
-};
+export const TIMEOUT: Record<EGameStatus, number> = IS_DEV
+  ? {
+      WOLF_KILL: 250,
+      WOLF_KILL_CHECK: 5,
+      SEER_CHECK: 20,
+      WITCH_ACT: 25,
+      GUARD_PROTECT: 20,
+      HUNTER_CHECK: 5,
+      SHERIFF_ELECT: 15,
+      SHERIFF_VOTE: 25,
+      SHERIFF_VOTE_CHECK: 5,
+      SHERIFF_ASSIGN: 20,
+      DAY_DISCUSS: 996,
+      EXILE_VOTE: 20,
+      EXILE_VOTE_CHECK: 5,
+      HUNTER_SHOOT: 20,
+      LEAVE_MSG: 996,
+      BEFORE_DAY_DISCUSS: 5,
+      SHERIFF_SPEECH: 996,
+      SHERIFF_ASSIGN_CHECK: 5,
+      GAME_OVER: 996,
+    }
+  : {
+      WOLF_KILL: 25,
+      WOLF_KILL_CHECK: 5,
+      SEER_CHECK: 20,
+      WITCH_ACT: 25,
+      GUARD_PROTECT: 20,
+      HUNTER_CHECK: 5,
+      SHERIFF_ELECT: 15,
+      SHERIFF_VOTE: 25,
+      SHERIFF_VOTE_CHECK: 5,
+      SHERIFF_ASSIGN: 20,
+      DAY_DISCUSS: 996,
+      EXILE_VOTE: 20,
+      EXILE_VOTE_CHECK: 5,
+      HUNTER_SHOOT: 20,
+      LEAVE_MSG: 996,
+      BEFORE_DAY_DISCUSS: 5,
+      SHERIFF_SPEECH: 996,
+      SHERIFF_ASSIGN_CHECK: 5,
+      GAME_OVER: 996,
+    };
 
 export type IToken = {
   /** player id */

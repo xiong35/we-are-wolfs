@@ -16,7 +16,7 @@ export const BottomActions: FC<IBottomActionsProps> = (props) => {
   return (
     <div className={styles["w-bottom_actions"]}>
       {isActing && (
-        <div className={styles["actions"]}>
+        <div className={styles["bottom_actions"]}>
           <SVGClose onClick={() => setIsActing(false)} />
 
           <div>
@@ -32,7 +32,7 @@ export const BottomActions: FC<IBottomActionsProps> = (props) => {
         </div>
       )}
 
-      <div className={styles["action-holder"]}></div>
+      <div className={styles["bottom_actions-holder"]}></div>
     </div>
   );
 };

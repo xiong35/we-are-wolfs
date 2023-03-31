@@ -1,5 +1,5 @@
 import { signal, computed } from "@preact/signals-react";
-import { None } from "@werewolf/shared";
+import { IS_DEV, None } from "@werewolf/shared";
 
 type Timeout = number;
 export type DialogInfo = {
@@ -20,6 +20,9 @@ export const currentContent = computed<DialogInfo | null>(() =>
  * @param timeout 显示的秒数
  */
 export function showDialog(toShowContent: string, timeout: number = 5) {
+  if (IS_DEV) {
+    return console.log("# dialog", { toShowContent, timeout });
+  }
   toShowDialogs.value = [
     ...toShowDialogs.value,
     {
