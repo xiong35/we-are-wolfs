@@ -12,16 +12,15 @@ import io from "../../";
 import { isDev } from "../../constants/env";
 import { Room } from "../../models/RoomModel";
 import { WError } from "../../utils/error";
+import { getBasicInfo } from "../../utils/getBasicInfo";
 import { GameController } from "./charActHandlers";
 
 /**
  * handle game begin
  */
 export const gameBegin: IMiddleware = async (ctx) => {
-  const roomNumber = ctx.get(HeaderRoomNumber);
-  const playerID = ctx.get(HeaderPlayerID);
+  const { player, playerID, room, roomNumber } = getBasicInfo(ctx);
 
-  const room = Room.getRoom(roomNumber);
   if (room.creatorID !== playerID) {
     throw new WError(HttpStatusCode.UNAUTHORIZED, "只有房主才能开始游戏");
   }

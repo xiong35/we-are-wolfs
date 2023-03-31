@@ -7,6 +7,7 @@ import { IMiddleware } from "koa-router";
 
 import { Room } from "../../models/RoomModel";
 import { WError } from "../../utils/error";
+import { getBasicInfo } from "../../utils/getBasicInfo";
 import { validateIdentity } from "../../utils/validateIdentity";
 
 /**
@@ -15,11 +16,7 @@ import { validateIdentity } from "../../utils/validateIdentity";
 export const gameAct: IMiddleware = async (ctx) => {
   const req = ctx.request.body as IGameActReq;
 
-  const roomNumber = ctx.get(HeaderRoomNumber);
-  const playerID = ctx.get(HeaderPlayerID);
-
-  const room = Room.getRoom(roomNumber);
-  const player = room.getPlayerById(playerID);
+  const { player, playerID, room, roomNumber } = getBasicInfo(ctx);
 
   const isValidate = validateIdentity(room, player);
   if (isValidate !== true) {
