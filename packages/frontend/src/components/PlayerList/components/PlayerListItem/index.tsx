@@ -44,7 +44,7 @@ export const PlayerListItem: FC<IPlayerListItemProps> = ({
       <div
         style={{ cursor: isActing ? "pointer" : "not-allowed", fontSize }}
         className={classNames("w-player_list_item-box", {
-          isDead: isAlive,
+          isDead: !isAlive,
           isChosen,
         })}
         onClick={() => setTarget(target === index ? None : index)}
@@ -55,7 +55,7 @@ export const PlayerListItem: FC<IPlayerListItemProps> = ({
         </div>
 
         {isSheriff && <SvgSheriff className="w-player_list_item-sherrif" />}
-        {isAlive && (
+        {!isAlive && (
           <SvgSkull
             className={classNames("w-player_list_item-skull", { isDying })}
           />
