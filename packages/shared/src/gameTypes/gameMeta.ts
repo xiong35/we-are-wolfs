@@ -60,7 +60,8 @@ export type EGameStatus =
   | "SHERIFF_ASSIGN_CHECK" //  检查指派警长的结果
   | "BEFORE_DAY_DISCUSS" //  夜晚结算
   | "EXILE_VOTE_CHECK" //  票选狼人结果
-  | "HUNTER_CHECK"; //  查看猎人开枪结果
+  | "HUNTER_CHECK" //  查看猎人开枪结果
+  | "GAME_OVER";
 
 /** 预设的每个阶段的时间限制(s) */
 export const TIMEOUT: Record<EGameStatus, number> = {
@@ -82,6 +83,7 @@ export const TIMEOUT: Record<EGameStatus, number> = {
   BEFORE_DAY_DISCUSS: 5,
   SHERIFF_SPEECH: 996,
   SHERIFF_ASSIGN_CHECK: 5,
+  GAME_OVER: 996,
 };
 
 export type IToken = {

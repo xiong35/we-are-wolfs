@@ -19,4 +19,5 @@ export const ZHGameStatusI18N: GameStatusI18N = {
   HUNTER_SHOOT: "若你是猎人, 请选择是否开枪",
   HUNTER_CHECK: "查看猎人开枪结果",
   LEAVE_MSG: "留遗言",
+  GAME_OVER: "游戏结束",
 };

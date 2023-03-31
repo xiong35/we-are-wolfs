@@ -117,6 +117,7 @@ export const status2Handler: Record<EGameStatus, GameActHandler> = {
   SHERIFF_VOTE_CHECK: SheriffVoteCheckHandler,
   BEFORE_DAY_DISCUSS: BeforeDayDiscussHandler,
   SHERIFF_ASSIGN_CHECK: SheriffAssignCheckHandler,
+  GAME_OVER: {} as any, // TODO
 };
 
 export class GameController {
@@ -208,7 +209,7 @@ export class GameController {
    */
   gotoNextStateAfterHandleDie(): EGameStatus {
     const { room } = this;
-    if (this.checkGameOver()) return;
+    if (this.checkGameOver()) return "GAME_OVER";
 
     room.curDyingPlayer.isDying = false;
     room.curDyingPlayer.isAlive = false;
