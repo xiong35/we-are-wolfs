@@ -13,7 +13,6 @@ export type IPlayerListProps = {
 export const PlayerList: FC<IPlayerListProps> = ({ playerList }) => {
   // const [target, setTarget] = useState<Index>(None);
 
-  /** 这里players第一个被认为书 empty item，会被丢弃 */
   const formattedPlayerList = useFormatedPlayerlist(
     playerList,
     needingCharacters.value.length

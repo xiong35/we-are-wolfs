@@ -18,4 +18,11 @@ test("Create Room", async () => {
 
   await firstPage.waitForSelector(".w-start");
   await firstPage.click(".w-start");
+
+  const selector = await firstPage.waitForSelector('[class^="_game-status"]');
+  const text = await selector.evaluate((node) => node.textContent);
+
+  expect(text).toBe("狼人杀人");
+
+  browsers.forEach((b) => b.close());
 }, 100000000);

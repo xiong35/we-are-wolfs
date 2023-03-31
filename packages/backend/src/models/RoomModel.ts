@@ -115,7 +115,7 @@ export class Room implements IRoom {
   }
 
   private addPlayer(player: Player) {
-    this.players[player.index] = player;
+    this.players[player.index - 1] = player;
     this.playersMap[player.id] = player;
   }
 
@@ -130,7 +130,7 @@ export class Room implements IRoom {
   }
 
   getPlayerByIndex(index: Index): Player {
-    const player = this.players[index];
+    const player = this.players[index - 1];
     if (!player) throw new WError(400, "编号错误");
     return player;
   }

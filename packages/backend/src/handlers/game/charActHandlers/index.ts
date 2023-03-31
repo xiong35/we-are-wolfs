@@ -128,7 +128,7 @@ export class GameController {
   /** 唤起给定节点的 startOfState */
   tryBeginState(statusToBegin: EGameStatus, ...argsToStartOfState: any[]) {
     const handler = status2Handler[statusToBegin];
-    const { action, argsToEndOfState } = handler.startOfState(
+    const { action, argsToEndOfState = [] } = handler.startOfState(
       this.room,
       ...argsToStartOfState
     );
@@ -185,7 +185,7 @@ export class GameController {
 
   tryEndState(statusToEnd: EGameStatus, ...argsToEndOfState: any[]) {
     const handler = status2Handler[statusToEnd];
-    const { argsToNextStartOfState, nextState } = handler.endOfState(
+    const { argsToNextStartOfState = [], nextState } = handler.endOfState(
       this.room,
       ...argsToEndOfState
     );

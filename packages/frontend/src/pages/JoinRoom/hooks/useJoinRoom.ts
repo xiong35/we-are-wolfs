@@ -6,6 +6,7 @@ import { showDialog } from "../../../signals/dialog";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../../utils/token";
 import { PASSWORD, ROOM_NUMBER } from "../../../constants/searchPrams";
+import { self } from "../../../signals/game";
 
 export function useJoinRoom() {
   const navigate = useNavigate();
@@ -22,6 +23,9 @@ export function useJoinRoom() {
 
     if (!res) return showDialog("加入房间失败");
 
+    const { id, index } = res;
+
+    self.value = { ...self.peek(), id, index };
     showDialog("成功加入房间!");
     setToken(res.id, roomNumber);
 

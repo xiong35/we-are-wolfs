@@ -7,13 +7,10 @@ export function useFormatedPlayerlist(
 ) {
   return useMemo(() => {
     let formattedPlayerList = [...playerList];
-    for (let i = 1; i < sum + 1; i++) {
+    for (let i = 0; i < sum; i++) {
       if (!formattedPlayerList[i])
-        formattedPlayerList[i] = { index: i } as IPublicPlayer;
+        formattedPlayerList[i] = { index: i + 1 } as IPublicPlayer;
     }
-
-    formattedPlayerList.shift();
-    console.log({ formattedPlayerList });
 
     return formattedPlayerList;
   }, [playerList.length]);
