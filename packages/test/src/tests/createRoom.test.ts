@@ -1,4 +1,5 @@
 import { config6 } from "../configs/6";
+import { createRoom } from "../utils/createRoom";
 import { getPages } from "../utils/getPages";
 import { startMasterPlayer } from "../utils/startMasterPlayer";
 import { startNormalPlayer } from "../utils/startNormalPlayer";
@@ -6,18 +7,7 @@ import { startNormalPlayer } from "../utils/startNormalPlayer";
 const config = config6;
 
 test("Create Room", async () => {
-  const { pages, browsers } = await getPages(config);
-
-  const [firstPage, ...restPages] = pages;
-
-  await startMasterPlayer(firstPage, config);
-
-  for (const p of restPages) {
-    await startNormalPlayer(p, config);
-  }
-
-  await firstPage.waitForSelector(".w-start");
-  await firstPage.click(".w-start");
+  const { pages, browsers, firstPage, restPages } = await createRoom(config);
 
   const selector = await firstPage.waitForSelector('[class^="_game-status"]');
   const text = await selector.evaluate((node) => node.textContent);
