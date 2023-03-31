@@ -20,13 +20,17 @@ import { getIsActing, resetActions, setIsActing } from "../../signals/actions";
 import classNames from "classnames";
 import { Memo } from "./components/Memo";
 import { Events } from "./components/Events";
+import { useTick } from "./hooks/useTick";
+import { useGetInfo } from "./hooks/useGetInfo";
 
 export type IPlayProps = {};
 
 const Play: FC<IPlayProps> = (props) => {
   const dateVal = date.value;
   const selfVal = self.value;
-  console.log({ dateVal, selfVal });
+
+  useTick();
+  useGetInfo();
 
   const [showCharacter, setShowCharacter] = useState(false);
   const [showActions, setShowActions] = useState(false);

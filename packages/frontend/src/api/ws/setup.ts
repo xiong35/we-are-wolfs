@@ -2,6 +2,7 @@ import { SERVER_DOMAIN, WSEvents, WS_PATH } from "@werewolf/shared";
 import io from "socket.io-client";
 import { showDialog } from "../../signals/dialog";
 import { getToken } from "../../utils/token";
+import { changeStatus } from "./handlers/changeStatus";
 import { gameBegin } from "./handlers/gameBegin";
 import { gameEnd } from "./handlers/gameEnd";
 import { roomJoin } from "./handlers/roomJoin";
@@ -35,6 +36,7 @@ export function setupSocket() {
   on(socket, WSEvents.GAME_END, gameEnd);
   on(socket, WSEvents.ROOM_JOIN, roomJoin);
   on(socket, WSEvents.SHOW_MSG, showWSMsg);
+  on(socket, WSEvents.CHANGE_STATUS, changeStatus);
 
   socket.emit(WSEvents.FE_JOIN_ROOM, roomNumber);
 }

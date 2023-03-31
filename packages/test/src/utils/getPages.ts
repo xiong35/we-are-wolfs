@@ -12,7 +12,7 @@ export async function getPages(config: Config) {
 
   for (let i = 0; i < playerNum; i++) {
     console.log(" getPage - launching:", i + 1);
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: false, devtools: true });
     console.log(" getPage - launched:", i + 1);
 
     const page = await browser.newPage();

@@ -38,7 +38,10 @@ export const self = signal<IPlayer>({
 export const date = signal<Day>(None);
 /** 当前游戏进程 */
 export const gameStatus = signal<EGameStatus>("WOLF_KILL");
-/** 当前状态还有多结束 */
+/**
+ * 当前状态还有多结束
+ * on(socket, WSEvents.CHANGE_STATUS, changeStatus); 处和refresh中修改
+ */
 export const gameStatusTimeLeft = signal(TIMEOUT["WOLF_KILL"]);
 
 /**
@@ -52,6 +55,7 @@ export async function refresh() {
   gameStatus.value = data.gameStatus;
   players.value = data.players;
   self.value = data.self;
+  gameStatusTimeLeft.value = TIMEOUT[data.gameStatus];
 }
 
 /** 重置所有游戏状态 */

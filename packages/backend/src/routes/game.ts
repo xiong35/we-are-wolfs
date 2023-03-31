@@ -1,6 +1,7 @@
 import Router from "koa-router";
 import { gameAct } from "../handlers/game/act";
 import { gameBegin } from "../handlers/game/begin";
+import { getStatus } from "../handlers/game/status";
 
 // import gameAct from "../handlers/http/gameAct";
 // import gameBegin from "../handlers/http/gameBegin";
@@ -10,8 +11,7 @@ import { gameBegin } from "../handlers/game/begin";
 const gameRouter = new Router();
 
 gameRouter.post("game begin", "/begin", gameBegin);
-// TODO
-// gameRouter.post("game status", "/status", gameStatus); // 查看游戏状态相关 api
+gameRouter.get("game status", "/status", getStatus); // 查看游戏状态相关 api
 gameRouter.post("game act", "/act", gameAct); // 进行角色的操作相关 api
 // TODO
 // gameRouter.use(
