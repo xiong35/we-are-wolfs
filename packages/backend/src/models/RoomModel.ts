@@ -135,6 +135,14 @@ export class Room implements IRoom {
     return player;
   }
 
+  toString(): string {
+    const obj = { ...this };
+    delete obj.clearSelfTimer;
+    delete obj.gameController;
+
+    return JSON.stringify(obj);
+  }
+
   static getRoom(number: string): Room {
     const room = Room.roomMap[number];
     if (!room) throw new WError(400, "未找到房间号");
