@@ -13,7 +13,7 @@ import { ReactComponent as SVGMoon } from "../../assets/moon.svg";
 import { ReactComponent as SVGSun } from "../../assets/sun.svg";
 import { Btn } from "../../components/Btn";
 import { CharacterInfo } from "./components/CharacterInfo";
-import { ZHGameStatusI18N } from "@werewolf/shared";
+import { IS_DEV, ZHGameStatusI18N } from "@werewolf/shared";
 import { Actions } from "./components/Actions";
 import { BottomActions } from "./components/BottomActions";
 import { getIsActing, resetActions, setIsActing } from "../../signals/actions";
@@ -52,7 +52,7 @@ const Play: FC<IPlayProps> = (props) => {
       </div>
 
       <div className={styles["game-status"]}>
-        {ZHGameStatusI18N[gameStatus.value]}
+        {IS_DEV ? gameStatus.value : ZHGameStatusI18N[gameStatus.value]}
       </div>
       <div className={styles["game-status"]}>
         剩余时间：

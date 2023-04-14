@@ -2,7 +2,7 @@
  * 游戏规则相关的定义
  */
 
-import { IS_DEV } from "../..";
+import { IS_DEV } from "../constants";
 import { ID } from "./game";
 
 /**

@@ -19,3 +19,5 @@ export const StoragePrefix = `w-werewolf-`;
 export const TokenKey = `${StoragePrefix}token`;
 
 export const None = -1;
+
+export const IS_DEV = true;

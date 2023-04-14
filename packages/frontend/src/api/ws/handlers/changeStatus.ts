@@ -29,6 +29,7 @@ export const changeStatus: HandlerOf<WSEvents.CHANGE_STATUS> = async ({
   const selfVal = self.peek();
 
   let hintToShow: string | null = null;
+  console.log("# changeStatus", { status, selfVal });
   if (status === "WOLF_KILL_CHECK" && selfVal.character === "WEREWOLF") {
     hintToShow = await getWolfKillResNShow();
   } else if (status === "WOLF_KILL" && selfVal.character === "WEREWOLF") {
