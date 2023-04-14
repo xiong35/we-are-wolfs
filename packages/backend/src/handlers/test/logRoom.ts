@@ -8,5 +8,10 @@ export const logRoom: IMiddleware = async (ctx) => {
   console.log("# logRoom", roomNumber);
   console.log("# logRoom", room);
 
-  ctx.body = { ...room, timer: undefined, clearSelfTimer: undefined };
+  ctx.body = {
+    ...room,
+    timer: undefined,
+    clearSelfTimer: undefined,
+    gameController: undefined,
+  };
 };

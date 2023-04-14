@@ -19,7 +19,7 @@ export async function getPages(config: Config) {
 
     await page.goto(CLIENT_BASE_URL);
 
-    await page.setViewport({ width: 450, height: 800 });
+    await page.setViewport({ width: 380, height: 600 });
 
     pages.push(page);
     browsers.push(browser);

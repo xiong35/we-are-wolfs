@@ -17,7 +17,7 @@ export async function createRoom(config: Config) {
 
   const startBtn = await firstPage.waitForSelector(".w-start:not(.disabled)");
   console.log("# createRoom", "startBtn got");
-  await sleep(500);
+  await sleep(1000);
   await startBtn.click();
 
   return { pages, browsers, firstPage, restPages };
