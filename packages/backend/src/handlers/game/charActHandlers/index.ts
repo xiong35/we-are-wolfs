@@ -3,9 +3,11 @@ import {
   IGameEndMsg,
   IHttpResp,
   Index,
+  IS_DEV,
   TIMEOUT,
   WSEvents,
 } from "@werewolf/shared";
+import { writeFile, writeFileSync } from "fs";
 import { Context } from "koa";
 import io from "../../..";
 import { CLEAR_ROOM_TIME } from "../../../constants/time";
@@ -197,6 +199,13 @@ export class GameController {
       nextState,
       argsToNextStartOfState,
     });
+
+    if (IS_DEV) {
+      writeFileSync(
+        `./backup/data.${this.room.currentDay}.${this.room.curStatus}.json`,
+        this.room.toString()
+      );
+    }
 
     this.tryBeginState(nextState, ...argsToNextStartOfState);
   }

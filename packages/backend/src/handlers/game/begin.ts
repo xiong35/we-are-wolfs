@@ -4,12 +4,12 @@ import {
   HttpStatusCode,
   IGameBeginResp,
   IHttpResp,
+  IS_DEV,
   WSEvents,
 } from "@werewolf/shared";
 import { IMiddleware } from "koa-router";
 
 import io from "../../";
-import { isDev } from "../../constants/env";
 import { Room } from "../../models/RoomModel";
 import { WError } from "../../utils/error";
 import { getBasicInfo } from "../../utils/getBasicInfo";
@@ -35,7 +35,7 @@ export const gameBegin: IMiddleware = async (ctx) => {
 
   for (const p of room.players) {
     let index: number;
-    if (isDev) {
+    if (IS_DEV) {
       index = 0;
     } else {
       index = Math.floor(Math.random() * needingCharacters.length);

@@ -8,9 +8,10 @@ import {
   IPlayer,
   IPublicPlayer,
   IRoom,
+  IS_DEV,
   None,
 } from "@werewolf/shared";
-import { isDev } from "../constants/env";
+import { mkdir, mkdirSync, rm, rmSync } from "fs";
 import { GameController } from "../handlers/game/charActHandlers";
 import { WError } from "../utils/error";
 import { Player } from "./PlayerModel";
@@ -48,6 +49,11 @@ export class Room implements IRoom {
     characters,
     password,
   }: ICreateRoomReq & { creator: Player }) {
+    if (IS_DEV) {
+      rmSync("./backup", { recursive: true, force: true });
+      mkdirSync("./backup");
+    }
+
     if (!checkNeedingCharacters(characters)) {
       throw new WError(400, "人数配比不合法");
     }
@@ -56,7 +62,7 @@ export class Room implements IRoom {
       throw new WError(500, "未提供 player");
     }
 
-    if (isDev) {
+    if (IS_DEV) {
       this.roomNumber = "666666";
       Room.roomMap[this.roomNumber] = this;
     } else {
@@ -139,6 +145,7 @@ export class Room implements IRoom {
     const obj = { ...this };
     delete obj.clearSelfTimer;
     delete obj.gameController;
+    delete obj.playersMap;
 
     return JSON.stringify(obj);
   }
