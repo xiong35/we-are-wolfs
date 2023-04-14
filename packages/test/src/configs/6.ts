@@ -20,7 +20,7 @@ export const config6: Config = {
     {
       from: 3,
       target: 1,
-      actionName: "预言家验人",
+      actionName: "查验身份",
       stage: "SEER_CHECK",
     },
     {

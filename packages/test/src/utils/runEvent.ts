@@ -2,13 +2,14 @@ import { Page } from "puppeteer";
 import { Event } from "../configs";
 import { classname } from "./classname";
 import { sleep } from "./sleep";
+import { waitForText } from "./waitForText";
 
 const actionSelector = classname("_actions_") + " > .w-btn:nth-child(2)";
 const confirmSVGSelector =
   classname("_bottom_actions_") + " > svg:nth-child(3)";
 
 export async function runEvent(page: Page, event: Event) {
-  await page.waitForSelector(`text/${event.stage}`);
+  await waitForText(page, event.stage, classname("_game-status"));
 
   console.log("# runEvent", "entered", event.stage);
 
