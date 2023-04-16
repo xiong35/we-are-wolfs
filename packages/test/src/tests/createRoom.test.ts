@@ -12,7 +12,7 @@ test("Create Room", async () => {
   const selector = await firstPage.waitForSelector('[class^="_game-status"]');
   const text = await selector.evaluate((node) => node.textContent);
 
-  expect(text).toBe("狼人杀人");
+  expect(text).toBe("WOLF_KILL");
 
   browsers.forEach((b) => b.close());
 }, 100000000);
