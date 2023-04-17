@@ -36,9 +36,12 @@ export class Room implements IRoom {
   /** 销毁房间本身的计时器 */
   clearSelfTimer: NodeJS.Timeout;
   /** 死亡结算后的下一个状态 */
-  nextStateOfDieCheck: Extract<EGameStatus, "WOLF_KILL" | "DAY_DISCUSS">;
+  nextStateOfDieCheck: Extract<
+    EGameStatus,
+    "WOLF_KILL" | "DAY_DISCUSS"
+  > | null = null;
   /** 当前正在进行死亡结算的玩家序号 */
-  curDyingPlayer: Player;
+  curDyingPlayer: Player | null = null;
 
   createdAt = new Date();
 
@@ -113,6 +116,10 @@ export class Room implements IRoom {
     }
 
     const index = this.remainingIndexes.shift(); // assign smallest index
+    if (index === undefined) {
+      throw new WError(500, "index 不存在");
+    }
+
     const player = new Player(name, index);
 
     this.addPlayer(player);
@@ -142,7 +149,7 @@ export class Room implements IRoom {
   }
 
   toString(): string {
-    const obj = { ...this };
+    const obj = { ...this } as any;
     delete obj.clearSelfTimer;
     delete obj.gameController;
     delete obj.playersMap;
@@ -165,7 +172,7 @@ function checkNeedingCharacters(needingCharacters: ECharacter[]): boolean {
   if (!needingCharacters.length) return false;
   const charMap = needingCharacters.reduce((map, character) => {
     map[character] = map[character] || 0;
-    map[character]++;
+    map[character]!++;
     return map;
   }, {} as Partial<Record<ECharacter, number>>);
 

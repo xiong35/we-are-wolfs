@@ -222,8 +222,10 @@ export class GameController {
     const { room } = this;
     if (this.checkGameOver()) return "GAME_OVER";
 
-    room.curDyingPlayer.isDying = false;
-    room.curDyingPlayer.isAlive = false;
+    if (room.curDyingPlayer) {
+      room.curDyingPlayer.isDying = false;
+      room.curDyingPlayer.isAlive = false;
+    }
 
     const dyingPlayer = room.players.find((p) => p.isDying);
 
@@ -242,7 +244,7 @@ export class GameController {
         room.players.forEach((p) => (p.canBeVoted = p.isAlive));
       }
 
-      const nextState = room.nextStateOfDieCheck;
+      const nextState = room.nextStateOfDieCheck!;
       room.nextStateOfDieCheck = null;
       return nextState;
     }

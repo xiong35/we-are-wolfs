@@ -8,7 +8,8 @@
     "allowJs": false, // 是否允许出现js
     "newLine": "LF",
     "esModuleInterop": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "strictNullChecks": true
   },
   "include": [
     "src/**/*.ts"

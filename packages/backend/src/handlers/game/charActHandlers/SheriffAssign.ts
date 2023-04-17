@@ -34,7 +34,7 @@ export const SheriffAssignHandler: GameActHandler = {
 
     if (
       !room.players.find((p) => p.isSheriff) ||
-      !room.curDyingPlayer.isSheriff
+      !room.curDyingPlayer?.isSheriff
     ) {
       // 死者不是警长或无警长, 直接结束
       return {
@@ -58,7 +58,7 @@ export const SheriffAssignHandler: GameActHandler = {
       // TODO 通知发表遗言的时间
 
       // 去除现在死的玩家的警长身份
-      room.curDyingPlayer.isSheriff = false;
+      if (room.curDyingPlayer) room.curDyingPlayer.isSheriff = false;
 
       const nextSheriff = room.players.find((p) => p.isSheriff);
       if (!nextSheriff) {

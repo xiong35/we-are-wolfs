@@ -3,7 +3,7 @@ import { Index } from "../gameTypes";
 export type Vote = {
   from: Index;
   /** 弃票则为 falsy 值 */
-  voteAt: Index;
+  voteAt?: Index;
 };
 
 /**
