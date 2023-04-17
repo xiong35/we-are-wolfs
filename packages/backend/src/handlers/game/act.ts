@@ -24,8 +24,6 @@ export const gameAct: IMiddleware = async (ctx) => {
   }
 
   const gameStatus = room.curStatus;
-  // TODO check character
-  // TODO validate request
 
   console.log("# gameAct", { gameStatus }, player.name, req.target);
 

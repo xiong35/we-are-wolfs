@@ -55,8 +55,6 @@ export const SheriffAssignHandler: GameActHandler = {
         nextState: room.gameController.gotoNextStateAfterHandleDie(),
       };
     } else {
-      // TODO 通知发表遗言的时间
-
       // 去除现在死的玩家的警长身份
       if (room.curDyingPlayer) room.curDyingPlayer.isSheriff = false;
 

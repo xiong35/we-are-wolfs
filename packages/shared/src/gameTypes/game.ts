@@ -61,14 +61,14 @@ export type IPublicPlayer = {
   /**
    * 白天处决的投票记录
    * 下标是天数, value 是投给了谁
-   * #TODO 曾是 hasVotedAt
+   * 曾是 hasVotedAt
    */
   exileVotes: Index[];
   /**
    * 下标是天数, 包括:
    * 上警(index=0)
    * 白天传警徽 index 为奇数
-   * #TODO 曾是 sheriffVotes
+   * 曾是 sheriffVotes
    */
   sheriffAssigns: Index[];
   /**

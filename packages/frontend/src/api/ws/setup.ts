@@ -28,7 +28,6 @@ export function setupSocket() {
     console.log("#ws connected");
   });
 
-  // TODO
   on(socket, WSEvents.PING, (ping) => {
     console.log(ping);
   });
