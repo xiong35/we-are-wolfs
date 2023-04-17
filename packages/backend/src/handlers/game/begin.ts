@@ -75,7 +75,7 @@ export const gameBegin: IMiddleware = async (ctx) => {
         };
         break;
       case "VILLAGER":
-        p.characterStatus = null;
+        p.characterStatus = undefined;
       default:
         break;
     }

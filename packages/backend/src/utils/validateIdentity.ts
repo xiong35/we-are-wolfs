@@ -15,17 +15,17 @@ export function validateIdentity(room: Room, player: Player): true | string {
     case "HUNTER_SHOOT":
       return (
         (player.character === "HUNTER" &&
-          room.curDyingPlayer.id === player.id) ||
+          room.curDyingPlayer?.id === player.id) ||
         "你不是猎人"
       );
     case "SHERIFF_ASSIGN":
       return (
-        (player.isSheriff && room.curDyingPlayer.id === player.id) ||
+        (player.isSheriff && room.curDyingPlayer?.id === player.id) ||
         "你不是警长"
       );
     case "LEAVE_MSG":
       return (
-        (player.isDying && room.curDyingPlayer.id === player.id) ||
+        (player.isDying && room.curDyingPlayer?.id === player.id) ||
         "你不能发表遗言"
       );
   }
