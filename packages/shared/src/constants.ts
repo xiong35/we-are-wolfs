@@ -18,6 +18,6 @@ export const HeaderRoomNumber = "w-room-number";
 export const StoragePrefix = `w-werewolf-`;
 export const TokenKey = `${StoragePrefix}token`;
 
-export const None = -1;
+export const None = 0;
 
 export const IS_DEV = true;

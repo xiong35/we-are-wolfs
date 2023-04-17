@@ -22,7 +22,7 @@ export class Room implements IRoom {
   password?: string;
   needingCharacters: ECharacter[];
   remainingIndexes: Index[];
-  currentDay: Day = None; // 狼人杀人时会 ++, 一开始是 -1，游戏开始被加到 0
+  currentDay: Day = -1; // 狼人杀人时会 ++, 一开始是 -1，游戏开始被加到 0
   isFinished = false;
   gameStatus: EGameStatus[] = ["WOLF_KILL"];
   toFinishPlayers: Set<number> = new Set<Index>();

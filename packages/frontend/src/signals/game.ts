@@ -35,7 +35,7 @@ export const self = signal<IPlayer>({
 });
 
 /** 天数 */
-export const date = signal<Day>(None);
+export const date = signal<Day>(-1);
 /** 当前游戏进程 */
 export const gameStatus = signal<EGameStatus>("WOLF_KILL");
 /**
