@@ -1,7 +1,7 @@
-import { Config } from "../configs";
+import { Config } from "../../configs";
 import { Page } from "puppeteer";
 import { ESetableCharacters } from "@werewolf/shared";
-import { sleep } from "./sleep";
+import { sleep } from "../puppeteerEnhancer/sleep";
 
 export async function setPlayerNum(page: Page, config: Config) {
   console.log("# setPlayerNum");

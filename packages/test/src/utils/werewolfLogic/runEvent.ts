@@ -1,8 +1,8 @@
 import { Page } from "puppeteer";
-import { Event } from "../configs";
-import { classname } from "./classname";
-import { sleep } from "./sleep";
-import { waitForText } from "./waitForText";
+import { Event } from "../../configs";
+import { classname } from "../puppeteerEnhancer/classname";
+import { sleep } from "../puppeteerEnhancer/sleep";
+import { waitForText } from "../puppeteerEnhancer/waitForText";
 
 const actionSelector = classname("_actions_") + " > .w-btn:nth-child(2)";
 const confirmSVGSelector =

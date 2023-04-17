@@ -1,4 +1,5 @@
 import { Page } from "puppeteer";
+import { getTextContent } from "./getTextContent";
 import { sleep } from "./sleep";
 
 export async function waitForText(
@@ -7,9 +8,7 @@ export async function waitForText(
   selector: string
 ) {
   while (1) {
-    const actualText = await (
-      await (await page.$(selector))?.getProperty?.("textContent")
-    )?.jsonValue?.();
+    const actualText = await getTextContent(page, selector);
     if (actualText === targetText) {
       break;
     } else {

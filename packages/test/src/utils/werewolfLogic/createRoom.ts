@@ -1,6 +1,6 @@
-import { Config } from "../configs";
+import { Config } from "../../configs";
 import { getPages } from "./getPages";
-import { sleep } from "./sleep";
+import { sleep } from "../puppeteerEnhancer/sleep";
 import { startMasterPlayer } from "./startMasterPlayer";
 import { startNormalPlayer } from "./startNormalPlayer";
 

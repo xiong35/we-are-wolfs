@@ -2,10 +2,10 @@
 
 import { ESetableCharacters } from "@werewolf/shared";
 import { Page } from "puppeteer";
-import { Config } from "../configs/index";
+import { Config } from "../../configs/index";
 import { fillPassword } from "./fillPassword";
 import { setPlayerNum } from "./setPlayerNum";
-import { sleep } from "./sleep";
+import { sleep } from "../puppeteerEnhancer/sleep";
 
 export async function startMasterPlayer(page: Page, config: Config) {
   console.log("# startMasterPlayer");

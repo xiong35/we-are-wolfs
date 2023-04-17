@@ -1,6 +1,6 @@
 import { CLIENT_BASE_URL } from "@werewolf/shared";
 import puppeteer, { Page, Browser } from "puppeteer";
-import { Config } from "../configs/index";
+import { Config } from "../../configs/index";
 import { sumPlayers } from "./sumPlayers";
 
 export async function getPages(config: Config) {

@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import { Config } from "../configs";
+import { Config } from "../../configs";
 import { fillPassword } from "./fillPassword";
 import { faker } from "@faker-js/faker";
 

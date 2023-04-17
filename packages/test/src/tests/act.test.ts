@@ -1,19 +1,19 @@
 import { config6 } from "../configs/6";
-import { classname } from "../utils/classname";
-import { createRoom } from "../utils/createRoom";
-import { getPages } from "../utils/getPages";
-import { runEvent } from "../utils/runEvent";
-import { sleep } from "../utils/sleep";
-import { startMasterPlayer } from "../utils/startMasterPlayer";
-import { startNormalPlayer } from "../utils/startNormalPlayer";
+import { classname } from "../utils/puppeteerEnhancer/classname";
+import { createRoom } from "../utils/werewolfLogic/createRoom";
+import { getPages } from "../utils/werewolfLogic/getPages";
+import { runEvent } from "../utils/werewolfLogic/runEvent";
+import { sleep } from "../utils/puppeteerEnhancer/sleep";
+import { startMasterPlayer } from "../utils/werewolfLogic/startMasterPlayer";
+import { startNormalPlayer } from "../utils/werewolfLogic/startNormalPlayer";
+import { getTextContent } from "../utils/puppeteerEnhancer/getTextContent";
 
 const config = config6;
 
 test("act", async () => {
   const { pages, browsers, firstPage, restPages } = await createRoom(config);
 
-  const selector = await firstPage.waitForSelector(classname("game-status"));
-  const text = await selector.evaluate((node) => node.textContent);
+  const text = await getTextContent(firstPage, classname("game-status"), true);
   expect(text).toBe("WOLF_KILL");
 
   for (const e of config.events || []) {
