@@ -147,7 +147,7 @@ export class Room implements IRoom {
     delete obj.gameController;
     delete obj.playersMap;
 
-    return JSON.stringify(obj);
+    return JSON.stringify(obj, null, 2);
   }
 
   static getRoom(number: string): Room {
