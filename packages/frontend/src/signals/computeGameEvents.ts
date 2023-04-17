@@ -1,4 +1,5 @@
 import { computed } from "@preact/signals-react";
+import { realPlayers } from "@werewolf/mock";
 import {
   getVoteSituation,
   ICharacterEvent,
@@ -12,9 +13,13 @@ import {
   None,
   Vote,
 } from "@werewolf/shared";
-import { date, players, self } from "./game";
+import { date, players as playerSig, self } from "./game";
 
 export const gameEvents = computed(() => {
+  // const players = playerSig.value;
+  console.log("net players:", playerSig.value);
+  const players = realPlayers;
+
   let _gameEvents: IGameEvent[] = [];
   let _characterEvents: ICharacterEvent[] = [];
 
@@ -23,7 +28,7 @@ export const gameEvents = computed(() => {
   /** 下标为天数, value 为 Vote[] */
   const exileVotes: Vote[][] = [];
 
-  players.value.forEach((p) => {
+  players.forEach((p) => {
     // 警长竞选投票
     if (date.value !== 0)
       sheriffVotes.push({
@@ -90,7 +95,7 @@ export const gameEvents = computed(() => {
 
   // 1. 游戏中, 渲染自己的角色行动
   // 2. 游戏结束后可获得所有角色信息, 将他们都渲染出来
-  const playerDetails = players.value as IPlayer[];
+  const playerDetails = players as IPlayer[];
   playerDetails.forEach((p) => {
     if (self.value.index === p.index) {
       _characterEvents.push(getEvents(self.value));
@@ -131,7 +136,7 @@ export const groupedGameEvents = computed(() => {
   gameEvents.value.forEach((e) => {
     const at = e.at;
     const day = Math.ceil(at / 2);
-    list[day] ? void 0 : (list[day] = []);
+    if (!list[day]) list[day] = [];
     list[day].push(e);
   });
   return list;

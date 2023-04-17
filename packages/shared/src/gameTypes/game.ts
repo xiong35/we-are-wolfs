@@ -63,7 +63,7 @@ export type IPublicPlayer = {
    * 下标是天数, value 是投给了谁
    * 曾是 hasVotedAt
    */
-  exileVotes: Index[];
+  exileVotes: (Index | undefined | null)[];
   /**
    * 下标是天数, 包括:
    * 上警(index=0)

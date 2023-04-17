@@ -14,6 +14,7 @@ import { CLEAR_ROOM_TIME } from "../../../constants/time";
 
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
+import { WError } from "../../../utils/error";
 import { emit } from "../../../ws/tsHelper";
 
 import { BeforeDayDiscussHandler } from "./BeforeDayDiscuss";
@@ -202,9 +203,9 @@ export class GameController {
 
     if (IS_DEV) {
       writeFileSync(
-        `./backup/${this.room.currentDay}.${
-          new Date().getTime() % 1000000
-        }.${this.room.curStatus}.json`,
+        `./backup/${this.room.currentDay}.${Math.round(
+          (new Date().getTime() % 10000000) / 1000
+        )}.${this.room.curStatus}.json`,
         this.room.toString()
       );
     }
@@ -300,6 +301,9 @@ export class GameController {
   }
 
   handleHttp(player: Player, target: Index) {
+    if (!(player instanceof Player) || typeof target !== "number") {
+      throw new WError(400, "参数错误");
+    }
     return status2Handler[this.room.curStatus].handleHttpInTheState(
       this.room,
       player,

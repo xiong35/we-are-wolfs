@@ -27,6 +27,26 @@
 .w-main {
   max-width: 500px;
   margin: auto;
+
+  * {
+    color: var(--on-bg);
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border: var(--bg) 3px solid;
+    background-color: var(--on-bg);
+  }
 }
 
 body {
