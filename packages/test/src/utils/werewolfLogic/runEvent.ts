@@ -1,3 +1,4 @@
+import { None } from "@werewolf/shared";
 import { Page } from "puppeteer";
 import { Event } from "../../configs";
 import { classname } from "../puppeteerEnhancer/classname";
@@ -21,7 +22,7 @@ export async function runEvent(page: Page, event: Event) {
   );
   await actionDetailBtn.click();
 
-  if (event.target > 0) {
+  if (event.target !== None) {
     const targetNum = await page.waitForSelector(`text/${event.target}`);
     await targetNum.click();
   }

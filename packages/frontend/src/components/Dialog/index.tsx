@@ -6,6 +6,7 @@ import {
   dialogTimeLeft,
   hideDialog,
 } from "../../signals/dialog";
+import { IS_DEV } from "@werewolf/shared";
 
 export const Dialog: FC = () => {
   if (dialogTimeLeft.value <= 0) return null;
@@ -15,6 +16,7 @@ export const Dialog: FC = () => {
       borderClassName="w-dialog-main"
       className={"w-dialog"}
       onCancel={hideDialog}
+      style={IS_DEV ? { pointerEvents: "none" } : undefined}
     >
       <div className="w-dialog-content">
         <span

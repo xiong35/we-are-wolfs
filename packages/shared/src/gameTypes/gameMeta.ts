@@ -67,24 +67,24 @@ export type EGameStatus =
 /** 预设的每个阶段的时间限制(s) */
 export const TIMEOUT: Record<EGameStatus, number> = IS_DEV
   ? {
-      WOLF_KILL: 10,
+      WOLF_KILL: 7,
       WOLF_KILL_CHECK: 3,
-      SEER_CHECK: 10,
-      WITCH_ACT: 10,
-      GUARD_PROTECT: 10,
+      SEER_CHECK: 7,
+      WITCH_ACT: 7,
+      GUARD_PROTECT: 7,
       HUNTER_CHECK: 3,
       SHERIFF_ELECT: 3,
       SHERIFF_VOTE: 3,
       SHERIFF_VOTE_CHECK: 3,
       SHERIFF_ASSIGN: 3,
       DAY_DISCUSS: 996,
-      EXILE_VOTE: 20,
-      EXILE_VOTE_CHECK: 5,
-      HUNTER_SHOOT: 20,
+      EXILE_VOTE: 10,
+      EXILE_VOTE_CHECK: 996,
+      HUNTER_SHOOT: 5,
       LEAVE_MSG: 996,
-      BEFORE_DAY_DISCUSS: 5,
+      BEFORE_DAY_DISCUSS: 3,
       SHERIFF_SPEECH: 996,
-      SHERIFF_ASSIGN_CHECK: 5,
+      SHERIFF_ASSIGN_CHECK: 3,
       GAME_OVER: 996,
     }
   : {

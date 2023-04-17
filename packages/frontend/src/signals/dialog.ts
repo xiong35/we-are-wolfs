@@ -21,7 +21,8 @@ export const currentContent = computed<DialogInfo | null>(() =>
  */
 export function showDialog(toShowContent: string, timeout: number = 5) {
   if (IS_DEV) {
-    return console.log("# dialog", { toShowContent, timeout });
+    console.log("# dialog", { toShowContent, timeout });
+    timeout = 1;
   }
   toShowDialogs.value = [
     ...toShowDialogs.value,

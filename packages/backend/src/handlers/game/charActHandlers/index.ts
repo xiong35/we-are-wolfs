@@ -202,8 +202,8 @@ export class GameController {
 
     if (IS_DEV) {
       writeFileSync(
-        `./backup/data.${this.room.currentDay}.${
-          new Date().getTime() % 10000
+        `./backup/${this.room.currentDay}.${
+          new Date().getTime() % 1000000
         }.${this.room.curStatus}.json`,
         this.room.toString()
       );
