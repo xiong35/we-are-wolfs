@@ -1,4 +1,10 @@
-import { getVoteResult, Index, IWerewolfStatus, None, WSEvents } from "@werewolf/shared";
+import {
+  getVoteResult,
+  Index,
+  IWerewolfStatus,
+  None,
+  WSEvents,
+} from "@werewolf/shared";
 import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
@@ -10,11 +16,11 @@ import { GameActHandler } from "./";
 export const WolfKillHandler: GameActHandler = {
   curStatus: "WOLF_KILL",
 
-  handleHttpInTheState(
-    room: Room,
-    player: Player,
-    target: Index
-  ) {
+  handleHttpInTheState(room: Room, player: Player, target: Index) {
+    if (target === None) {
+      throw new WError(400, "未指定目标");
+    }
+
     // 记录想杀谁
     const status = player.characterStatus as IWerewolfStatus;
     status.wantToKills = status.wantToKills || [];

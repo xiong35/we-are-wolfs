@@ -1,4 +1,4 @@
-import { Index, IWitchStatus } from "@werewolf/shared";
+import { Index, IWitchStatus, None } from "@werewolf/shared";
 import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
@@ -9,11 +9,11 @@ import { GameActHandler } from "./";
 export const WitchActHandler: GameActHandler = {
   curStatus: "WITCH_ACT",
 
-  handleHttpInTheState(
-    room: Room,
-    player: Player,
-    target: Index
-  ) {
+  handleHttpInTheState(room: Room, player: Player, target: Index) {
+    if (target === None) {
+      throw new WError(400, "未指定目标");
+    }
+
     const status = player.characterStatus as IWitchStatus;
     if (
       status.MEDICINE?.usedDay === room.currentDay ||

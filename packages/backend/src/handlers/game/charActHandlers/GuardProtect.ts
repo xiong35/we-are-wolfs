@@ -1,4 +1,4 @@
-import { IGuardStatus, Index, IWitchStatus } from "@werewolf/shared";
+import { IGuardStatus, Index, IWitchStatus, None } from "@werewolf/shared";
 import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
@@ -9,11 +9,11 @@ import { GameActHandler } from "./";
 export const GuardProtectHandler: GameActHandler = {
   curStatus: "GUARD_PROTECT",
 
-  handleHttpInTheState(
-    room: Room,
-    player: Player,
-    target: Index
-  ) {
+  handleHttpInTheState(room: Room, player: Player, target: Index) {
+    if (target === None) {
+      throw new WError(400, "未指定目标");
+    }
+
     const status = player.characterStatus as IGuardStatus;
     status.protects = status.protects || [];
 

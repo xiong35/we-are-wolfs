@@ -1,4 +1,4 @@
-import { getVoteResult, Index, Vote, WSEvents } from "@werewolf/shared";
+import { getVoteResult, Index, None, Vote, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
@@ -11,11 +11,11 @@ import { GameActHandler } from "./";
 export const SheriffVoteHandler: GameActHandler = {
   curStatus: "SHERIFF_VOTE",
 
-  handleHttpInTheState(
-    room: Room,
-    player: Player,
-    target: Index
-  ) {
+  handleHttpInTheState(room: Room, player: Player, target: Index) {
+    if (target === None) {
+      throw new WError(400, "未指定目标");
+    }
+
     if (!room.getPlayerByIndex(target)?.canBeVoted) {
       throw new WError(400, "选择的玩家未参与竞选");
     }

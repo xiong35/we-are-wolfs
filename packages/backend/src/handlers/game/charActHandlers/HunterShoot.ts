@@ -1,4 +1,4 @@
-import { IHunterStatus, Index, WSEvents } from "@werewolf/shared";
+import { IHunterStatus, Index, None, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
@@ -11,11 +11,11 @@ import { GameActHandler } from "./";
 export const HunterShootHandler: GameActHandler = {
   curStatus: "HUNTER_SHOOT",
 
-  handleHttpInTheState(
-    room: Room,
-    player: Player,
-    target: Index
-  ) {
+  handleHttpInTheState(room: Room, player: Player, target: Index) {
+    if (target === None) {
+      throw new WError(400, "未指定目标");
+    }
+
     // console.log("# HunterShoot", { player });
     if (player.die?.fromCharacter === "WITCH") {
       // 如果被女巫毒死了就不能开枪

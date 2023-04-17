@@ -1,4 +1,10 @@
-import { IHttpResp, Index, ISeerActResp, ISeerStatus } from "@werewolf/shared";
+import {
+  IHttpResp,
+  Index,
+  ISeerActResp,
+  ISeerStatus,
+  None,
+} from "@werewolf/shared";
 
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
@@ -8,11 +14,11 @@ import { GameActHandler } from "./";
 export const SeerCheckHandler: GameActHandler = {
   curStatus: "SEER_CHECK",
 
-  handleHttpInTheState(
-    room: Room,
-    player: Player,
-    target: Index
-  ) {
+  handleHttpInTheState(room: Room, player: Player, target: Index) {
+    if (target === None) {
+      throw new WError(400, "未指定目标");
+    }
+
     const targetPlayer = room.getPlayerByIndex(target);
 
     if (!targetPlayer) throw new WError(400, "未找到此玩家");

@@ -24,8 +24,6 @@ export async function act() {
 
   if (potion.value === "POISON" && gameStatus.value === "WITCH_ACT") {
     t = -t;
-  } else if (t === None) {
-    return showDialog("未选择目标");
   }
 
   const res = await gameActReq({

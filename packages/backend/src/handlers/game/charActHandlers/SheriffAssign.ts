@@ -1,8 +1,9 @@
-import { Index, WSEvents } from "@werewolf/shared";
+import { Index, None, WSEvents } from "@werewolf/shared";
 import { Context } from "koa";
 
 import { Player } from "../../../models/PlayerModel";
 import { Room } from "../../../models/RoomModel";
+import { WError } from "../../../utils/error";
 import { renderHintNPlayers } from "../../../utils/renderHintNPlayers";
 import { emit } from "../../../ws/tsHelper";
 import { GameActHandler } from "./";
@@ -10,11 +11,11 @@ import { GameActHandler } from "./";
 export const SheriffAssignHandler: GameActHandler = {
   curStatus: "SHERIFF_ASSIGN",
 
-  handleHttpInTheState(
-    room: Room,
-    player: Player,
-    target: Index
-  ) {
+  handleHttpInTheState(room: Room, player: Player, target: Index) {
+    if (target === None) {
+      throw new WError(400, "未指定目标");
+    }
+
     const targetPlayer = room.getPlayerByIndex(target);
     targetPlayer.isSheriff = true;
     player.isSheriff = false;
