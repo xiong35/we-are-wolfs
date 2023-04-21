@@ -1,5 +1,4 @@
 import { IPublicPlayer } from "@werewolf/shared";
-import { useMemo, useState } from "react";
 
 export function useFormatedPlayerlist(
   playerList: IPublicPlayer[],

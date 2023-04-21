@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gameStatusTimeLeft } from "../../../signals/game";
 
 export function useTick() {

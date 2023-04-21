@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getRoomMetaReq } from "../../../api/http/room";
 import { setupSocket } from "../../../api/ws/setup";
 import { showDialog } from "../../../signals/dialog";
